@@ -1,10 +1,10 @@
 export default {
-  title: "Nulite starter for Eleventy",
-  shortTitle: "Nulite starter 💊",
+  title: "Mile High Coder",
+  shortTitle: "milehighcoder",
   description:
-    "A beautiful and elegant blog theme starter project por Eleventy",
-  url: "https://example.com/",
+    "Nestled amidst the mountains near Denver, I breathe life into virtual worlds, sculpting them with code and data.",
+  url: "https://milehighcoder.com/",
   author: {
-    name: "Your Name Here",
+    name: "Matt",
   },
 };
