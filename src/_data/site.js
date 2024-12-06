@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   title: "Nulite starter for Eleventy",
   shortTitle: "Nulite starter 💊",
   description:
