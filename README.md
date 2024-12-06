@@ -1,13 +1,4 @@
-<div align="center">
-  <img
-    alt="Nulite logo"
-    height="80"
-    src="https://em-content.zobj.net/source/apple/354/pill_1f48a.png"
-  />
-
-# Nulite
-
-</div>
+# milehighcoder-site
 
 Nulite is a simple, elegant, minimalistic stater project for [Eleventy](https://www.11ty.dev/) to help you create a simple blog with focus on performance and simplicity.
 
