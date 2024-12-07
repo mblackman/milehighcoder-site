@@ -1,5 +1,6 @@
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import codeStyleHooks from "eleventy-plugin-code-style-hooks";
+import githubContent from "./_11ty/github-content.js";
 
 export default function (eleventyConfig) {
   // Copy the contents of the `public` folder to the output folder
@@ -69,6 +70,9 @@ export default function (eleventyConfig) {
       .map((letter, index) => `<span class="wavy" style="animation-delay: ${index * 60}ms;">${letter}</span>`)
       .join("");
   });
+
+  // Gets content from GitHub
+  eleventyConfig.addPlugin(githubContent);
 
   return {
     // Control which files Eleventy will process
