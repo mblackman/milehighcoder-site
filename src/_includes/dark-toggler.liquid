@@ -53,5 +53,7 @@
     html.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);
     currentTheme = newTheme;
+    const themeChange = new CustomEvent('themeChanged', { detail: { theme: localStorage.theme } });
+    document.dispatchEvent(themeChange); 
   });
 </script>

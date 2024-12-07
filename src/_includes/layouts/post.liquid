@@ -31,3 +31,45 @@ if similar.length > 0 %}
   </ul>
 </section>
 {% endif %} {% include "css/prism.liquid" %}
+
+<div id="utterances-block"></div>
+
+<script>
+function updateUtterancesTheme() {
+    const utterances = document.querySelector('.utterances-frame');
+	console.log("Update utterances theme.");
+    if (utterances) {
+        const theme = localStorage.theme === 'light'
+			? '{{site.utterances.lightTheme}}'
+			: '{{site.utterances.darkTheme}}';
+		console.log("Changing theme to " + theme)
+        utterances.contentWindow.postMessage({
+			type: 'set-theme',
+			theme: theme
+        }, 'https://utteranc.es');
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+	const utterancesScript = document.createElement('script');
+	utterancesScript.src = 'https://utteranc.es/client.js';
+	utterancesScript.setAttribute('repo', '{{site.utterances.repo}}');
+	utterancesScript.setAttribute('issue-term', '{{site.utterances.issueTerm}}');
+	{% if site.utterances.label %}
+        utterancesScript.setAttribute('label', '{{site.utterances.label}}');
+	{% endif %}
+	utterancesScript.async = true;
+    utterancesScript.crossOrigin = 'anonymous';
+	const theme = localStorage.theme === 'light'
+		? '{{site.utterances.lightTheme}}'
+		: '{{site.utterances.darkTheme}}';
+  	utterancesScript.setAttribute('theme', theme); 
+
+	const utterancesContainer = document.getElementById('utterances-block');
+  	utterancesContainer.appendChild(utterancesScript);
+
+	document.addEventListener('themeChanged', function(event) {
+		updateUtterancesTheme();
+	});
+});
+</script>

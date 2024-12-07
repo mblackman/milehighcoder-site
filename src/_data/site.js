@@ -7,4 +7,11 @@ export default {
   author: {
     name: "Matt",
   },
+  utterances: {
+    repo: "mblackman/milehighcoder-site",
+    issueTerm: "pathname",
+    label: "discussion",
+    lightTheme: "boxy-light",
+    darkTheme: "photon-dark"
+  },
 };
