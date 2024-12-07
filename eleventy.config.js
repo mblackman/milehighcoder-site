@@ -63,6 +63,13 @@ export default function (eleventyConfig) {
     }
   );
 
+  eleventyConfig.addShortcode("wavy", function(text) {
+    return text
+      .split("")
+      .map((letter, index) => `<span class="wavy" style="animation-delay: ${index * 60}ms;">${letter}</span>`)
+      .join("");
+  });
+
   return {
     // Control which files Eleventy will process
     // e.g.: *.md, *.njk, *.html, *.liquid

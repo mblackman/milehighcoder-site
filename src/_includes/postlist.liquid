@@ -4,8 +4,8 @@
     <a href="{{ post.url }}">
       <h3 class="article-title">{{ post.data.title }}</h3>
       <div class="article-time">
-        <time datetime="{{ post.date }}">
-          {{ post.date | date : "%a, %b %d, %Y" }}
+        <time datetime="{{ post.data.date }}">
+          {{ post.data.date | date : "%a, %b %d, %Y" }}
         </time>
       </div>
       <p class="article-description">{{ post.data.description }}</p>
