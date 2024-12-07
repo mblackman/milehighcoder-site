@@ -2,6 +2,7 @@ import CleanCSS from "clean-css";
 import fs from "fs/promises"
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import githubContent from "./_11ty/github-content.js";
 
 export default function (eleventyConfig) {
   // Copy the contents of the `public` folder to the output folder
@@ -126,6 +127,9 @@ export default function (eleventyConfig) {
       )
       .join("");
   });
+
+  // Gets content from GitHub
+  eleventyConfig.addPlugin(githubContent);
 
   return {
     // Control which files Eleventy will process
