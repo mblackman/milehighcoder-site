@@ -34,7 +34,7 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("posts", function (collectionApi) {
-    return collectionApi.getFilteredByGlob("src/posts/*.md").reverse();
+    return collectionApi.getFilteredByGlob("src/posts/*.md");
   });
 
   eleventyConfig.addLiquidFilter(
@@ -64,7 +64,8 @@ export default function (eleventyConfig) {
   );
 
   eleventyConfig.addCollection("projects", function (collectionApi) {
-    return collectionApi.getFilteredByGlob("src/projects/*.md").reverse();
+    return collectionApi.getFilteredByGlob("src/projects/*.md")
+                        .filter(project => !project.data.hidden);
   });
 
   eleventyConfig.addFilter("techPill", function (name) {
