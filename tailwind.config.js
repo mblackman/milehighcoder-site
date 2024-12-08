@@ -5,8 +5,9 @@ export default {
     extend: {},
   },
   daisyui: {
-    themes: ["light", "dark"],
+    themes: ["retro", "night"],
   },
   plugins: [require("daisyui")],
+  darkMode: ['selector', '[data-theme="night"]'],
 }
 

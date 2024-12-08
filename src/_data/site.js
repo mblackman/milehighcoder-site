@@ -7,6 +7,8 @@ export default {
   author: {
     name: "Matt",
   },
+  lightTheme: "retro",
+  darkTheme: "night",
   utterances: {
     repo: "mblackman/milehighcoder-site",
     issueTerm: "pathname",

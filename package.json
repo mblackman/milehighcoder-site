@@ -11,7 +11,7 @@
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy",
     "debugstart": "DEBUG=Eleventy* npx @11ty/eleventy --serve --quiet",
     "benchmark": "DEBUG=Eleventy:Benchmark* npx @11ty/eleventy",
-    "dev:tailwind": "tailwindcss -i ./src/_includes/css/base.css -o ./_site/output.css --watch"
+    "dev:css": "tailwindcss -i ./src/_includes/css/base.css -o ./_site/output.css --watch"
   },
   "keywords": [
     "eleventy",
