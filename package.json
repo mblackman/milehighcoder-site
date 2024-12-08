@@ -5,11 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npx @11ty/eleventy",
+    "build": "npx @11ty/eleventy && npm run css",
+    "css": "tailwindcss -i ./src/_includes/css/base.css -o ./_site/output.css --minify",
     "start": "npx @11ty/eleventy --serve --quiet",
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy",
     "debugstart": "DEBUG=Eleventy* npx @11ty/eleventy --serve --quiet",
-    "benchmark": "DEBUG=Eleventy:Benchmark* npx @11ty/eleventy"
+    "benchmark": "DEBUG=Eleventy:Benchmark* npx @11ty/eleventy",
+    "dev:tailwind": "tailwindcss -i ./src/_includes/css/base.css -o ./_site/output.css --watch"
   },
   "keywords": [
     "eleventy",
@@ -20,6 +22,8 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
     "@11ty/eleventy-plugin-rss": "^2.0.2",
-    "eleventy-plugin-code-style-hooks": "^2.0.2"
+    "daisyui": "^4.12.14",
+    "eleventy-plugin-code-style-hooks": "^2.0.2",
+    "tailwindcss": "^3.4.16"
   }
 }
