@@ -7,7 +7,7 @@ export default {
   daisyui: {
     themes: ["retro", "night"],
   },
-  plugins: [require("daisyui")],
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
   darkMode: ['selector', '[data-theme="night"]'],
 }
 

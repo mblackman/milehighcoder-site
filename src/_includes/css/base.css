@@ -1,3 +1,65 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  line-height: calc(1em + 0.75rem);
+}
+html {
+  --font-family: -apple-system, BlinkMacSystemFont, "Inter", "IBM Plex Sans",
+    Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji,
+    Segoe UI Symbol;
+
+  --container-max-size: 75ch;
+  --container-padding-sides: var(--space-4);
+
+  --space-1: 0.35rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 2.5rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 5rem;
+  --space-10: 6rem;
+
+  --font-size-xs: clamp(0.8rem, 0.12vw + 0.8rem, 1rem);
+  --font-size-base: clamp(0.9rem, 0.16vw + 0.9rem, 1.25rem);
+  --font-size-lg: clamp(1.2rem, 0.12vw + 1.2rem, 1.6rem);
+  --font-size-xl: clamp(1.6rem, 0.14vw + 1.6rem, 2rem);
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.wavy {
+  animation-name: wavy;
+  animation-duration: 1.3s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+@keyframes wavy {
+  0% {
+    top: 0px;
+  }
+  50% {
+    top: -10px;
+  }
+  100% {
+    top: 0px;
+  }
+}

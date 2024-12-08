@@ -1,5 +1,5 @@
 ---
-layout: layouts/content.liquid
+layout: layouts/default.liquid
 title: About me
 ---
 

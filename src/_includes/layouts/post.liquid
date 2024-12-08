@@ -1,17 +1,24 @@
 ---
-layout: layouts/content.liquid
+layout: layouts/default.liquid
 ---
 
-<header class="post-header">
-  <h1 class="post-title">{{ title }}</h1>
-  <div class="post-time">
-    <time datetime="{{ post.date }}">
-      {{ page.date | date : "%a, %b %d, %Y" }}
-    </time>
-  </div>
-</header>
+{% block head %}
+  {{ parent }} 
+  <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+{% endblock %}
 
-{{ content }}
+<article class="prose">
+  <header class="post-header">
+    <h1 class="post-title">{{ title }}</h1>
+    <div class="post-time">
+      <time datetime="{{ post.date }}">
+        {{ page.date | date : "%a, %b %d, %Y" }}
+      </time>
+    </div>
+  </header>
+
+  {{ content }}
+</article>
 
 {% assign similar = collections.posts | similarPosts: page.inputPath, tags %} {%
 if similar.length > 0 %}
@@ -31,8 +38,6 @@ if similar.length > 0 %}
   </ul>
 </section>
 {% endif %} 
-
-{% include "css/prism.liquid" %}
 
 <div id="utterances-block"></div>
 

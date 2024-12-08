@@ -1,5 +1,5 @@
 import pluginRss from "@11ty/eleventy-plugin-rss";
-import codeStyleHooks from "eleventy-plugin-code-style-hooks";
+import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 
 export default function (eleventyConfig) {
   // Copy the contents of the `public` folder to the output folder
@@ -8,9 +8,7 @@ export default function (eleventyConfig) {
     "./public/": "/",
   });
 
-  eleventyConfig.addPlugin(codeStyleHooks, {
-    lineNumbers: false,
-  });
+  eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addPlugin(pluginRss);
   eleventyConfig.addLiquidFilter("dateToRfc3339", pluginRss.dateToRfc3339);
