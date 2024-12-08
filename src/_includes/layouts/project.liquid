@@ -1,0 +1,22 @@
+---
+layout: layouts/content.liquid
+---
+
+<div class="content post border-solid border-b-1 border-gray-700 pb-6">
+  	<h1>{{ title }}</h1>
+	<div class="flex text-sm font-light dark:font-extralight">
+		<div class="flex">
+        	{{ date | date : "%a, %b %d, %Y" }} - {{ endDate | date : "%a, %b %d, %Y" }}
+		</div>
+	</div>
+	{% if repo %}
+	<div class="mt-2">
+		<a href="{{ repo }}">
+			{{ repo }}
+		</a>
+	</div>
+	{% endif %}
+  	<div class="mt-6">
+  	{{ content }}
+	</div>
+</div>

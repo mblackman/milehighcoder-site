@@ -1,0 +1,68 @@
+<div class="py-8 space-y-6 mx-4 sm:mx-8">
+{% for project in projects %}
+<a href="{{ project.url | url }}" class="block flex flex-col sm:flex-row gap-4 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300">
+  <div class="w-full sm:w-1/3 lg:w-1/4 flex-shrink-0 flex justify-center m-1">
+    <div class="w-32 sm:w-40 h-32 sm:h-40 relative mt-4 sm:mt-0">
+      <img
+        src="{{ project.data.splash }}"
+        alt="{{ project.data.title }} project preview"
+        class="absolute w-full h-full object-cover object-center"
+      >
+    </div>
+  </div>
+  <div class="flex-grow p-4 flex flex-col justify-between">
+    <div>
+      <h2 class="text-xl font-semibold text-indigo-900 dark:text-indigo-300 mb-2">
+        {{ project.data.title }}
+      </h2>
+      <div class="flex flex-wrap gap-2 mb-4">
+        {% for tag in project.data.tech %}
+          {% assign tagColor = tag | techPill %}
+          {% assign textColor = tag | techPill | contrastColor %}
+          <span
+            class="px-2 py-1 text-xs rounded-full"
+            style="background-color: {{ tagColor }}; 
+                  color: {{ textColor }};"
+          >
+            {{ tag }}
+          </span>
+        {% endfor %}
+      </div>
+      <p class="text-gray-600 dark:text-gray-300">
+        {{ project.data.description }}
+      </p>
+    </div>
+  </div>
+</a>
+{% endfor %}
+</div>
+
+<style>
+  .article {
+    padding: var(--space-2) 0;
+    color: var(--color-text);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .article a {
+    text-decoration: unset;
+  }
+  .article + .article {
+    margin-top: var(--space-4);
+  }
+  .article-title {
+    transition: color 0.2s ease-in-out;
+  }
+  .article:hover .article-title {
+    color: var(--color-primary);
+  }
+  .article-description {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-shade);
+  }
+  .article-time {
+    color: var(--color-text-shade);
+    font-size: var(--font-size-xs);
+  }
+</style>
