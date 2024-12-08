@@ -63,10 +63,55 @@ export default function (eleventyConfig) {
     }
   );
 
-  eleventyConfig.addShortcode("wavy", function(text) {
+  eleventyConfig.addCollection("projects", function (collectionApi) {
+    return collectionApi.getFilteredByGlob("src/projects/*.md").reverse();
+  });
+
+  eleventyConfig.addFilter("techPill", function (name) {
+    switch (name) {
+      case "C#":
+        return "#A279DD";
+      case "Godot":
+        return "#478CBF";
+      case "Javascript":
+        return "#F9DC5C";
+      case "Unity":
+        return "#E84855";
+      case "Eleventy":
+        return "#4C9F70";
+      case "Nunjacks":
+        return "#D7263D";
+      case "HTML/CSS":
+        return "#0CF574";
+      case "Prototype":
+        return "#15E6CD";
+      default:
+        return "#6f1b85";
+    }
+  });
+
+  eleventyConfig.addFilter("contrastColor", function (bgColor) {
+    // Convert the background color to RGB
+    const r = parseInt(bgColor.slice(1, 3), 16);
+    const g = parseInt(bgColor.slice(3, 5), 16);
+    const b = parseInt(bgColor.slice(5, 7), 16);
+
+    // Calculate the perceived brightness of the color
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+    // Return either black or white depending on the brightness
+    return brightness > 128 ? "black" : "white";
+  });
+
+  eleventyConfig.addShortcode("wavy", function (text) {
     return text
       .split("")
-      .map((letter, index) => `<span class="wavy" style="animation-delay: ${index * 60}ms;">${letter}</span>`)
+      .map(
+        (letter, index) =>
+          `<span class="wavy" style="animation-delay: ${
+            index * 60
+          }ms;">${letter}</span>`
+      )
       .join("");
   });
 
@@ -98,7 +143,7 @@ export default function (eleventyConfig) {
     // folder name and does **not** affect where things go in the output folder.
     pathPrefix: "/",
   };
-};
+}
 
 const getSimilarTags = function (categoriesA, categoriesB) {
   if (!categoriesA) return [];
