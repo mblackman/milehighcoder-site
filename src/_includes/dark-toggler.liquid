@@ -27,17 +27,10 @@
 
   let currentTheme = localStorageTheme ? localStorageTheme : systemSettingTheme;
 
-  const checkbox = document.getElementById("dark-toggle-checkbox");
   const html = document.querySelector("html");
   const isLight = (currentTheme === "{{ site.lightTheme }}");
 
-  checkbox.checked = isLight;
   html.setAttribute("data-theme", currentTheme);
-
-  setTimeout(() => {
-    document.querySelector("body").style.transition =
-      "background-color 1s ease-out, color 1s ease-out";
-  }, 0);
 
   function onThemeChanged(checkbox) {
     const newTheme = checkbox.checked ? "{{ site.lightTheme }}" : "{{ site.darkTheme }}";
