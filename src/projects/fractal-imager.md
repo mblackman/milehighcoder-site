@@ -6,7 +6,7 @@ description: Generate high-resolution images of the Mandelbrot set.
 splash: /images/projects/fractal-imager-splash.bmp
 date: 2024-04-02
 endDate: 2024-04-03
-tags: personal-project
+type: personal-project
 visible: true
 tech:
     - C++

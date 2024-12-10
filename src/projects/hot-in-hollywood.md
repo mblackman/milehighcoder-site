@@ -5,7 +5,7 @@ description: A storytelling mobile game about being an active character in a rea
 splash: /images/projects/hot-in-hollywood-splash.png
 date: 2023-04-01
 endDate: 2024-01-06
-tags: professional-project
+type: professional-project
 hidden: true
 tech:
     - Unity

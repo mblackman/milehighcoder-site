@@ -5,7 +5,7 @@ description: A grid based RPG where you collect monsters and fight them.
 splash: /images/projects/monster-war-splash.webp
 date: 2018-09-23
 endDate: 2019-12-29
-tags: personal-project
+type: personal-project
 visible: true
 tech:
     - Unity

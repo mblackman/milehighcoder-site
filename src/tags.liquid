@@ -7,20 +7,18 @@ pagination:
     - all
     - post
     - posts
-    - tagList
+    - project
+    - projects
   addAllPagesToCollections: true
-eleventyComputed:
-  title: Tagged “{{ tag }}”
-permalink: /tags/{{ tag | slugify }}/
+  eleventyComputed:
+    title: Tagged “{{ tag }}”
+  permalink: /tags/{{ tag | slugify }}/
 ---
 
-<h1>Tagged “{{ tag }}”</h1>
+<div class="prose">
+  <h2>Tagged “{{ tag }}”</h2>
+</div>
 
 {% assign posts = collections[ tag ] %}
 {% include "postlist.liquid" %}
 
-<style>
-  h1 {
-    margin-bottom: var(--space-2);
-  }
-</style>

@@ -4,14 +4,16 @@ layout: layouts/default.liquid
 
 <div class="main-sections">
   <section>
-    <h2>Latest</h2>
+    <div class="prose">
+      <h2>Latest</h2>
+    </div>
     {% assign posts = collections.posts %}
     {% assign count = 1 %}
     {% include "postlist.liquid" %}
   </section>
 
   {% assign tagList = collections | postTags %} {% if tagList.length > 0 %}
-  <section>
+  <section class="prose">
     <h2>Topics</h2>
     {%- for tag in tagList -%}
     <a href="/tags/{{ tag.name }}">{{ tag.name }}({{ tag.count }})</a>{% if
@@ -19,14 +21,16 @@ layout: layouts/default.liquid
   </section>
   {% endif %}
 
-  <section>
-    <h2>More articles</h2>
-    {% assign posts = collections.posts %}
-    {% assign count = 5 %}
-    {% assign offset = 1 %}
-    {% include "postlist.liquid" %}
-    <a class="articles-link" href="/articles">All the articles</a>
-  </section>
+  {% assign posts = collections.posts %} {% if posts.length > 5 %}
+    <section class="prose">
+      <h2>More articles</h2>
+      
+      {% assign count = 5 %}
+      {% assign offset = 1 %}
+      {% include "postlist.liquid" %}
+      <a class="articles-link" href="/articles">All the articles</a>
+    </section>
+  {% endif %}
 </div>
 
 <style>

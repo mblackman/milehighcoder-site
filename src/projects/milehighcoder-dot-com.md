@@ -6,7 +6,7 @@ description: A statically generated website for my personal page on the web. You
 splash: /images/projects/mile-high-coder-splash.jpg
 date: 2024-01-25
 endDate: Present
-tags: personal-project
+type: personal-project
 visible: true
 tech:
     - Eleventy

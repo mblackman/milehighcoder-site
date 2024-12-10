@@ -24,9 +24,9 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("content/**/*.{svg,webp,png,jpeg}");
 
   eleventyConfig.addFilter("postTags", (tags) => {
+    const excludeKeys = new Set(["posts", "all", "project", "projects", "post"]); 
     return Object.keys(tags)
-      .filter((k) => k !== "posts")
-      .filter((k) => k !== "all")
+      .filter((k) => !excludeKeys.has(k)) 
       .map((k) => ({ name: k, count: tags[k].length }))
       .sort((a, b) => b.count - a.count);
   });

@@ -5,7 +5,7 @@ description: A farming sim where players capture creature who fight and aid arou
 splash: /images/projects/elysian-guardians-splash.webp
 date: 2023-09-02
 endDate: Present
-tags: personal-project
+type: personal-project
 visible: true
 tech:
     - Godot
