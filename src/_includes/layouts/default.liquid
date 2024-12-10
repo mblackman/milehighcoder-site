@@ -32,19 +32,14 @@
       <link rel="stylesheet" href="/output.css"/>
     {% endblock %}
   </head>
-  <body>
-    <a href="#skip" class="visually-hidden">Skip to main content</a>
-    {% include "navbar.liquid" %}
-    <style>
-      .main-container {
-        margin: 0 auto;
-        max-width: var(--container-max-size);
-        padding: 0 var(--container-padding-sides) var(--space-4);
-      }
-    </style>
-    <main class="main-container" id="skip">
-      {{ content }}
-    </main>
-    {% include "footer.liquid" %}
+  <body class="flex flex-col items-center justify-center">
+    <a href="#skip" class="hidden">Skip to main content</a>
+    <div class="p-6 max-w-3xl w-full"> 
+      {% include "navbar.liquid" %}
+      <main class="pl-10 pr-10 pt-5" id="skip">
+        {{ content }}
+      </main>
+      {% include "footer.liquid" %}
+    </div>
   </body>
 </html>
