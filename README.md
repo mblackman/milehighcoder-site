@@ -1,14 +1,6 @@
 # milehighcoder-site
 
-Nulite is a simple, elegant, minimalistic stater project for [Eleventy](https://www.11ty.dev/) to help you create a simple blog with focus on performance and simplicity.
-
-This project is strongly influenced by [Steph Ango's blog](https://stephango.com/) (one of the creators of Obsidian).
-
-If you like the project feel free to leave a star ⭐ You can also send me issues that you can find or proposals for improvement in PRs.
-
-![Preview of the Nulite blog starter. A simple website whith sample articles](https://imgur.com/lmqf76D.png)
-
-If you know Spanish, take a look at this article to [set up your blog for free with this template](https://codingpotions.com/crear-blog-gratis-markdown/)
+This is the repository for my personal site: [milehighcoder.com](https://www.milehighcoder.com). It's based of the template [nulite](https://github.com/codingpotions/nulite)] with a couple of changes.
 
 ## Features
 
@@ -16,14 +8,9 @@ If you know Spanish, take a look at this article to [set up your blog for free w
 - 📈 Good performance. Inline styles and the minimum amount of JS to make the page load as fast as possible.
 - 🌙 Support for light/dark mode. Respects user tastes and allows toggle between both saving preferences.
 - 📡 RSS. Bring back old days.
-- 🎨 Easily customizable. Thanks to the CSS variables system you can change colors and fonts in one place.
-- 🖍️ Syntax coloring. If you write blocks of code in the articles you will have coloring, and without adding extra JS.
+- 🎨 Easily customizable. Implements both Tailwindcss and Daisy UI for beautiful and rich pages.
+- 🖍️ Syntax coloring. If you write blocks of code in the articles you will have coloring.
 - 📝 Article recommendation. Each article has a tag-based recommendation system to give the user more content to read.
-
-## Getting started
-
-1. Fork this repo, or click in the button "Use this template": `https://github.com/codingpotions/nulite`
-2. `cd` into the project directory and run `npm install`
 
 ## Running and serving a dev build
 
@@ -32,6 +19,12 @@ npm run start
 ```
 
 Browse to [http://localhost:8080](http://localhost:8080).
+
+## Running Tailwindcss for dev
+
+```sh
+npm run dev:css
+```
 
 ## Running and serving a prod build
 
@@ -44,6 +37,8 @@ Output files are generated into the `_site` folder.
 ## Project structure
 
 ```
+public/
+    This folder contains statics files, copied directly into the output, like the favicon, for example
 src/
   _includes/
     All UI partials. Inside the css folder, in the global.liquid you can change the CSS variables
@@ -51,7 +46,10 @@ src/
     Here you can change the site info, like the title and description
   posts/
     Each individual post in markdown files
-  public/
-    This folder contians statics files, copied directly into the output, like the favicon, for ecample
+  projects/
+    The projects to show off your work
+  utils/
+    Utility pages for important information
+
 Configuration and build files
 ```
