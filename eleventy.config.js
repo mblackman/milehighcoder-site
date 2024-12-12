@@ -80,7 +80,7 @@ export default function (eleventyConfig) {
         return "#4C9F70";
       case "Nunjacks":
         return "#D7263D";
-      case "HTML/CSS":
+      case "HTML/CSS/Tailwindcss":
         return "#0CF574";
       case "Prototype":
         return "#15E6CD";
