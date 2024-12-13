@@ -32,11 +32,11 @@
       <link rel="stylesheet" href="/output.css"/>
     {% endblock %}
   </head>
-  <body class="flex flex-col items-center justify-center">
+  <body class="flex flex-col items-center justify-center bg-gradient-to-b from-base-100 to-base-300 min-h-screen">
     <a href="#skip" class="hidden">Skip to main content</a>
-    <div class="p-6 max-w-3xl w-full"> 
+    <div class="p-6 max-w-3xl w-full flex-grow"> 
       {% include "navbar.liquid" %}
-      <main class="flex-grow pl-10 pr-10 pt-5 pb-10" id="skip">
+      <main class="flex-grow pl-10 pr-10 pt-5 pb-10 bg-base-100" id="skip">
         {{ content }}
       </main>
       {% include "footer.liquid" %}
