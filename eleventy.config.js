@@ -1,3 +1,5 @@
+import CleanCSS from "clean-css";
+import fs from "fs/promises"
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 
@@ -16,6 +18,17 @@ export default function (eleventyConfig) {
     "getNewestCollectionItemDate",
     pluginRss.getNewestCollectionItemDate
   );
+
+  eleventyConfig.addLiquidShortcode("getCssContent", async function() {
+    try {
+      const cssContent = await fs.readFile("./_site/output.css", "utf8");
+      return new CleanCSS({}).minify(cssContent).styles;
+    } catch (error) {
+      console.error("Error reading CSS file:", error);
+      // Throw an error to fail the build
+      throw new Error("Failed to read or minify CSS: " + error.message);
+    }
+  });
 
   // Run Eleventy when these files change:
   // https://www.11ty.dev/docs/watch-serve/#add-your-own-watch-targets
