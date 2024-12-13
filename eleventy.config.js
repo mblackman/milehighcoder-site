@@ -1,7 +1,5 @@
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
-import htmlmin from "html-minifier";
-import fs from 'node:fs/promises';
 
 export default function (eleventyConfig) {
   // Copy the contents of the `public` folder to the output folder
@@ -114,27 +112,6 @@ export default function (eleventyConfig) {
           }ms;">${letter}</span>`
       )
       .join("");
-  });
-
-  eleventyConfig.addTransform("inline-css", async function(content, outputPath) {
-    if (outputPath.endsWith(".html")) {
-      const regex = /<link\s+rel="stylesheet"\s+href="\/output\.css"\s*\/?>/g;
-      if (regex.test(content)) {
-        try {
-          const cssContent = await fs.readFile("./_site/output.css", 'utf8');
-          const inlinedContent = content.replace(regex, `<style>\n${cssContent}\n</style>`);
-          return htmlmin.minify(inlinedContent, {
-            useShortDoctype: true,
-            removeComments: true,
-            collapseWhitespace: true
-          });
-        } catch (error) {
-          console.error('Error inlining CSS:', error);
-          return content; // Return original content on error
-        }
-      }
-    }
-    return content;
   });
 
   return {
