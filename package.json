@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npx @11ty/eleventy && npm run css",
+    "build": "npm run css && npx @11ty/eleventy",
     "css": "tailwindcss -i ./src/_includes/css/base.css -o ./_site/output.css --minify",
     "start": "npx @11ty/eleventy --serve --quiet",
     "debug": "DEBUG=Eleventy* npx @11ty/eleventy",
