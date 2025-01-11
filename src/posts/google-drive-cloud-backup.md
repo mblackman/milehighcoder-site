@@ -2,8 +2,8 @@
 title: Automated Google Drive Archiving with Google Cloud Run
 description: Instructions and resources to help you set up a scheduled backup that archives multiple folders in Google Drive. A set and forget process to help protect your vital data.
 date: 2025-01-11
-banner: /images/posts/godot-on-pi/raspberry-pi-export-header.png
-bannerAlt: Preview of Candy Wrapper playing on a Raspberry Pi with a raspberry frame.
+banner: /images/posts/google-drive-cloud-backup/banner.png
+bannerAlt: Old man yelling at Google Cloud and Google Drive. It's a mood you might avoid with this guide.
 tags:
   - software
   - google-cloud
