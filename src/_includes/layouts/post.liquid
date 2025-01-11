@@ -8,9 +8,9 @@ layout: layouts/default.liquid
 {% endblock %}
 
 <article class="prose">
-  <header class="post-header">
-    <h1 class="post-title">{{ title }}</h1>
-    <div class="post-time">
+  <header>
+    <h1>{{ title }}</h1>
+    <div  class="text-sm text-info pl-2">
       <time datetime="{{ post.date }}">
         {{ page.date | date : "%a, %b %d, %Y" }}
       </time>
@@ -22,14 +22,14 @@ layout: layouts/default.liquid
 
 {% assign similar = collections.posts | similarPosts: page.inputPath, tags %} {%
 if similar.length > 0 %}
-<section class="related">
-  <h2 class="related-title">You might also enjoy</h2>
-  <ul class="related-posts">
+<section>
+  <div class="divider">You might also enjoy</div>
+  <ul class="p-6">
     {% for post in similar limit: 2 %}
-    <li>
-      <a class="related-article" href="{{ post.url }}">
-        <h3 class="related-article-title">{{ post.data.title }}</h3>
-        <p class="related-article-description">
+    <li class="pr-4 pl-4">
+      <a href="{{ post.url }}">
+        <h3 class="mb-2 block text-xl font-semibold leading-snug tracking-normal antialiased underline">{{ post.data.title }}</h3>
+        <p class="pl-2 block text-base font-light leading-relaxed text-inherit antialiased">
           {{ post.data.description }}
         </p>
       </a>
