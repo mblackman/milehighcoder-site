@@ -1,6 +1,6 @@
 # milehighcoder-site
 
-This is the repository for my personal site: [milehighcoder.com](https://www.milehighcoder.com). It's based of the template [nulite](https://github.com/codingpotions/nulite)] with a couple of changes.
+This is the repository for my personal site: [milehighcoder.com](https://www.milehighcoder.com). It's based of the template [nulite](https://github.com/codingpotions/nulite) with a couple of changes.
 
 ## Features
 
@@ -19,12 +19,6 @@ npm run start
 ```
 
 Browse to [http://localhost:8080](http://localhost:8080).
-
-## Running Tailwindcss for dev
-
-```sh
-npm run dev:css
-```
 
 ## Running and serving a prod build
 
