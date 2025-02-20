@@ -1,5 +1,5 @@
 <ul>
-  {% for post in posts reversed limit: count offset: offset %}
+  {% for post in posts limit: count offset: offset %}
   <li class="article prose">
     <a href="{{ post.url }}" class="no-underline">
       <h3 class="article-title hover:underline">{{ post.data.title }}</h3>

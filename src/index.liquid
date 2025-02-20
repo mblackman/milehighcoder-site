@@ -7,8 +7,8 @@ layout: layouts/default.liquid
     <div class="prose">
       <h2>Latest</h2>
     </div>
-    {% assign posts = collections.posts %}
-    {% assign count = 5 %}
+    {% assign posts = collections.posts | reverse %}
+    {% assign count = 1 %}
     {% include "postlist.liquid" %}
   </section>
 
@@ -21,14 +21,19 @@ layout: layouts/default.liquid
   </section>
   {% endif %}
 
-  {% assign posts = collections.posts %} {% if posts.length > 5 %}
-    <section class="prose">
-      <h2>More articles</h2>
+  {% assign posts = collections.posts | reverse %} {% if posts.length > 1 %}
+    <br/>
+    <section>
+      <div class="prose">
+        <h2>More articles</h2>
+      </div>
       
       {% assign count = 5 %}
       {% assign offset = 1 %}
       {% include "postlist.liquid" %}
-      <a class="articles-link" href="/articles">All the articles</a>
+      <p class="text-center text-lg">
+        <a class="text-blue-600 visited:text-purple-600" href="/articles">All the articles</a>
+      </p>
     </section>
   {% endif %}
 </div>

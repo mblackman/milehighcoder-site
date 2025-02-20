@@ -2,5 +2,5 @@
     <h2>Articles</h2>
 </div>
 
-{% assign posts = collections.posts %}
+{% assign posts = collections.posts | reverse %}
 {% include "postlist.liquid" %}
