@@ -12,14 +12,14 @@ layout: layouts/default.liquid
     {% include "postlist.liquid" %}
   </section>
 
-  {% assign tagList = collections | postTags %} {% if tagList.length > 0 %}
+  {% comment %} {% assign tagList = collections | postTags %} {% if tagList.length > 0 %}
   <section class="prose">
     <h2>Topics</h2>
     {%- for tag in tagList -%}
     <a href="/tags/{{ tag.name }}">{{ tag.name }}({{ tag.count }})</a>{% if
     forloop.last != true %}<span>, </span>{% endif %} {%- endfor -%}
   </section>
-  {% endif %}
+  {% endif %} {% endcomment %}
 
   {% assign posts = collections.posts | reverse %} {% if posts.length > 1 %}
     <br/>
