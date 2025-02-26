@@ -81,26 +81,53 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter("techPill", function (name) {
-    switch (name) {
-      case "C#":
-        return "#A279DD";
-      case "Godot":
-        return "#478CBF";
-      case "Javascript":
-        return "#F9DC5C";
-      case "Unity":
-        return "#E84855";
-      case "Eleventy":
-        return "#4C9F70";
-      case "Nunjacks":
-        return "#D7263D";
-      case "HTML/CSS/Tailwindcss":
-        return "#0CF574";
-      case "Prototype":
-        return "#15E6CD";
-      default:
-        return "#6f1b85";
+    function generateHue(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+  
+      let hue = Math.abs(hash) % 360; // Ensure hue is within 0-360
+      return hue;
     }
+  
+    function hslToHex(h, s, l) {
+      s /= 100;
+      l /= 100;
+  
+      let c = (1 - Math.abs(2 * l - 1)) * s,
+        x = c * (1 - Math.abs(((h / 60) % 2) - 1)),
+        m = l - c / 2,
+        r = 0,
+        g = 0,
+        b = 0;
+  
+      if (0 <= h && h < 60) {
+        r = c; g = x; b = 0;
+      } else if (60 <= h && h < 120) {
+        r = x; g = c; b = 0;
+      } else if (120 <= h && h < 180) {
+        r = 0; g = c; b = x;
+      } else if (180 <= h && h < 240) {
+        r = 0; g = x; b = c;
+      } else if (240 <= h && h < 300) {
+        r = x; g = 0; b = c;
+      } else if (300 <= h && h < 360) {
+        r = c; g = 0; b = x;
+      }
+      // Multiply the r,g,b values to 255 and convert them to Hex strings
+      r = Math.round((r + m) * 255).toString(16);
+      g = Math.round((g + m) * 255).toString(16);
+      b = Math.round((b + m) * 255).toString(16);
+  
+      return "#" + (r.length == 1 ? "0" + r : r) + (g.length == 1 ? "0" + g : g) + (b.length == 1 ? "0" + b : b);
+    }
+  
+    const hue = generateHue(name);
+    const saturation = 70; // You can adjust this value (0-100)
+    const lightness = 60;  // You can adjust this value (0-100)
+    const hexColor = hslToHex(hue, saturation, lightness);
+    return hexColor;
   });
 
   eleventyConfig.addFilter("contrastColor", function (bgColor) {
