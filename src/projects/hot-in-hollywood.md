@@ -7,6 +7,7 @@ date: 2023-04-01
 endDate: 2024-01-06
 type: professional-project
 hidden: true
+permalink: false
 tech:
     - Unity
     - C#
