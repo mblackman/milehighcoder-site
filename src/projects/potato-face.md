@@ -5,7 +5,7 @@ repo: https://github.com/mblackman/potato-face
 description: A mini 2D game engine project to learn more about how game engines work.
 splash: /images/projects/potato-face-splash.png
 date: 2024-05-20
-endDate: Present
+endDate: 2025-05-17
 type: personal-project
 visible: true
 tech:
