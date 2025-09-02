@@ -6,7 +6,6 @@ splash: /images/projects/monster-war-splash.webp
 date: 2018-09-23
 endDate: 2019-12-29
 type: personal-project
-visible: true
 tech:
     - Unity
     - C#

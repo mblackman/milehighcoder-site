@@ -6,7 +6,6 @@ splash: /images/projects/elysian-guardians-splash.webp
 date: 2023-09-02
 endDate: Present
 type: personal-project
-visible: true
 tech:
     - Godot
     - C#

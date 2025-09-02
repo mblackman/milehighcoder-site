@@ -26,11 +26,72 @@ content:
       - name: banner
         label: Banner Image
         type: image
+        path: posts
       - name: bannerAlt
         label: Banner Alt Text
         type: string
       - name: tags
         label: Tags
+        type: string
+        list: true
+      - name: body
+        label: Body
+        type: rich-text
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/projects
+    view:
+      fields: [ title, date, tags, body ]
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Description
+        type: string
+      - name: subdir
+        label: Subdirectory
+        type: string
+        hidden: true
+        default: Project
+      - name: repo
+        label: Repository URL
+        type: string
+      - name: splash
+        label: Splash Image
+        type: image
+      - name: date
+        label: Date
+        type: date
+        options:
+          format: yyyy-mm-dd
+          name:min: 2024-12-24
+      - name: endDate
+        label: End Date
+        type: date
+        options:
+          format: yyyy-mm-dd
+          name:min: 2024-12-24
+      - name: type
+        label: Type
+        type: select
+        options:
+          values:
+            - value: professional-project
+              label: Professional
+            - value: personal-project
+              label: Personal
+      - name: hidden
+        label: Hidden
+        type: boolean
+        default: false
+      - name: permalink
+        label: Permalink
+        type: boolean
+        default: true
+      - name: tech
+        label: Tech Tags
         type: string
         list: true
       - name: body

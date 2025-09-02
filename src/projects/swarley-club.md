@@ -7,7 +7,6 @@ splash: /images/projects/swarley-club-splash.png
 date: 2025-03-31
 endDate: 2025-04-20
 type: personal-project
-visible: true
 tech:
     - HTML/CSS/Javascript
 ---

@@ -7,7 +7,6 @@ splash: /images/projects/mile-high-coder-splash.jpg
 date: 2024-01-25
 endDate: Present
 type: personal-project
-visible: true
 tech:
     - Eleventy
     - Javascript

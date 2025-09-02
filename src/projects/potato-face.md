@@ -7,7 +7,6 @@ splash: /images/projects/potato-face-splash.png
 date: 2024-05-20
 endDate: 2025-05-17
 type: personal-project
-visible: true
 tech:
     - C++
     - Make

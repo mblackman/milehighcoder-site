@@ -7,7 +7,6 @@ splash: /images/projects/fractal-imager-splash.bmp
 date: 2024-04-02
 endDate: 2024-04-03
 type: personal-project
-visible: true
 tech:
     - C++
 ---
