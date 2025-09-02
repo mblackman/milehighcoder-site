@@ -86,10 +86,6 @@ content:
         label: Hidden
         type: boolean
         default: false
-      - name: permalink
-        label: Permalink
-        type: boolean
-        default: true
       - name: tech
         label: Tech Tags
         type: string

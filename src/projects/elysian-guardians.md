@@ -7,7 +7,6 @@ date: 2023-00-02
 endDate: 2024-00-13
 type: personal-project
 hidden: false
-permalink: true
 tech:
   - Godot
   - C#
