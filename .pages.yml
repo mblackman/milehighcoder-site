@@ -26,7 +26,8 @@ content:
       - name: banner
         label: Banner Image
         type: image
-        path: posts
+        options:
+          path: posts
       - name: bannerAlt
         label: Banner Alt Text
         type: string
@@ -61,6 +62,8 @@ content:
       - name: splash
         label: Splash Image
         type: image
+        options:
+          path: projects
       - name: activeDevelopment
         label: Active Development
         type: boolean
