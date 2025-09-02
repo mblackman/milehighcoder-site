@@ -61,6 +61,10 @@ content:
       - name: splash
         label: Splash Image
         type: image
+      - name: activeDevelopment
+        label: Active Development
+        type: boolean
+        default: false
       - name: date
         label: Date
         type: date

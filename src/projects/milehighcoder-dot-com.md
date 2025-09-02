@@ -4,8 +4,9 @@ subdir: Project
 repo: https://github.com/mblackman/milehighcoder-site
 description: A statically generated website for my personal page on the web. You are looking at it right now!
 splash: /images/projects/mile-high-coder-splash.jpg
+activeDevelopment: true
 date: 2024-01-25
-endDate: Present
+endDate:
 type: personal-project
 tech:
     - Eleventy

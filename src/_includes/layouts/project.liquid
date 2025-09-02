@@ -6,7 +6,7 @@ layout: layouts/default.liquid
   	<h1>{{ title }}</h1>
 	<div class="flex text-sm font-light dark:font-extralight">
 		<div class="flex">
-        	{{ date | date : "%b %Y" }} - {{ endDate | date : "%b %Y" }}
+        	{{ date | date : "%b %Y" }} - {% if activeDevelopment %}Present{% else %}{{ endDate | date : "%b %Y" }}{% endif %}
 		</div>
 	</div>
 	{% if repo %}
