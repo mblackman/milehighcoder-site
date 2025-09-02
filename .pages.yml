@@ -7,6 +7,7 @@ content:
   - name: posts
     label: Posts
     type: collection
+    filename: "{primary}.md"
     path: src/posts
     view:
       fields: [ title, date, tags, body ]
@@ -41,6 +42,7 @@ content:
   - name: projects
     label: Projects
     type: collection
+    filename: "{primary}.md"
     path: src/projects
     view:
       fields: [ title, date, tags, body ]
