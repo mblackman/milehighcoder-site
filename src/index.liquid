@@ -2,9 +2,9 @@
 layout: layouts/default.liquid
 ---
 
-<div class="main-sections">
+<div class="flex flex-col gap-12">
   <section>
-    <div class="prose">
+    <div class="prose mb-6">
       <h2>Latest</h2>
     </div>
     {% assign posts = collections.posts | reverse %}
@@ -22,17 +22,16 @@ layout: layouts/default.liquid
   {% endif %} {% endcomment %}
 
   {% assign posts = collections.posts | reverse %} {% if posts.length > 1 %}
-    <br/>
     <section>
-      <div class="prose">
+      <div class="prose mb-6">
         <h2>More articles</h2>
       </div>
       
       {% assign count = 5 %}
       {% assign offset = 1 %}
       {% include "postlist.liquid" %}
-      <p class="text-center text-lg">
-        <a class="text-blue-600 visited:text-purple-600" href="/articles">All the articles</a>
+      <p class="text-center text-lg mt-8">
+        <a class="text-primary hover:text-primary/80 font-medium underline transition-colors" href="/articles">All the articles</a>
       </p>
     </section>
   {% endif %}

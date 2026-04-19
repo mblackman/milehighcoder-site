@@ -1,14 +1,14 @@
-<ul>
+<ul class="flex flex-col gap-6 w-full">
   {% for post in posts limit: count offset: offset %}
-  <li class="article prose">
-    <a href="{{ post.url }}" class="no-underline">
-      <h3 class="article-title hover:underline">{{ post.data.title }}</h3>
-      <div class="article-time">
+  <li class="group block w-full bg-base-200/50 backdrop-blur-sm rounded-2xl border border-transparent hover:border-primary/20 hover:bg-base-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+    <a href="{{ post.url }}" class="block p-6 no-underline text-base-content max-w-none">
+      <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors duration-200">{{ post.data.title }}</h3>
+      <div class="text-sm opacity-60 mb-3 font-medium">
         <time datetime="{{ post.data.date }}">
           {{ post.data.date | date : "%a, %b %d, %Y" }}
         </time>
       </div>
-      <p class="article-description">{{ post.data.description }}</p>
+      <p class="opacity-80 leading-relaxed">{{ post.data.description }}</p>
     </a>
   </li>
   {% endfor %}

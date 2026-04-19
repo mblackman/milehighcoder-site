@@ -4,6 +4,11 @@
     {% block head %}
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 
       {%if title %}
         <title>{{ title }}</title>
@@ -51,9 +56,9 @@
   </head>
   <body class="flex flex-col items-center justify-center bg-gradient-to-b from-base-100 to-base-300 min-h-screen">
     <a href="#skip" class="hidden">Skip to main content</a>
-    <div class="p-6 max-w-3xl w-full flex-grow"> 
+    <div class="p-6 max-w-4xl w-full flex-grow flex flex-col gap-6"> 
       {% include "navbar.liquid" %}
-      <main class="flex-grow pl-10 pr-10 pt-5 pb-10 bg-base-100" id="skip">
+      <main class="flex-grow px-8 py-10 bg-base-100/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-base-content/10" id="skip">
         {{ content }}
       </main>
       {% include "footer.liquid" %}

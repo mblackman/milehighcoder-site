@@ -5,10 +5,16 @@
   themes: retro, night;
 }
 
-/* Preserve custom typography max-width from old tailwind.config.js */
 @theme {
   --typography-max-width: 100ch;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 /* Map dark: prefix to DaisyUI night theme (was darkMode in tailwind.config.js) */
 @custom-variant dark (&:where([data-theme="night"], [data-theme="night"] *));
+
+@layer base {
+  body {
+    @apply font-sans antialiased text-base-content selection:bg-primary/30;
+  }
+}
