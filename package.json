@@ -15,21 +15,20 @@
     "dev:css": "tailwindcss -i ./src/_includes/css/base.css -o ./_site/output.css --watch"
   },
   "keywords": [
-    "eleventy",
-    "starter"
+    "personal-site",
+    "game-dev"
   ],
-  "author": "Diego López",
+  "author": "Matt",
   "license": "ISC",
+  "private": true,
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
     "@11ty/eleventy-plugin-rss": "^2.0.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "@tailwindcss/typography": "^0.5.15",
+    "clean-css": "^5.3.3",
     "concurrently": "^9.1.2",
     "daisyui": "^4.12.14",
     "tailwindcss": "^3.4.16"
-  },
-  "dependencies": {
-    "clean-css": "^5.3.3"
   }
 }
