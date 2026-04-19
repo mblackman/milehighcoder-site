@@ -1,49 +1,80 @@
 # milehighcoder-site
 
-This is the repository for my personal site: [milehighcoder.com](https://www.milehighcoder.com). It's based of the template [nulite](https://github.com/codingpotions/nulite) with a couple of changes.
+Source for my personal site: [milehighcoder.com](https://www.milehighcoder.com). Built with [Eleventy](https://www.11ty.dev/) v3, Liquid templates, Tailwind CSS, and DaisyUI. Originally forked from the [nulite](https://github.com/codingpotions/nulite) template, since customized.
 
 ## Features
 
-- 🧐 Simple. Elegant, minimalist design, clear and easy to read.
-- 📈 Good performance. Inline styles and the minimum amount of JS to make the page load as fast as possible.
-- 🌙 Support for light/dark mode. Respects user tastes and allows toggle between both saving preferences.
-- 📡 RSS. Bring back old days.
-- 🎨 Easily customizable. Implements both Tailwindcss and Daisy UI for beautiful and rich pages.
-- 🖍️ Syntax coloring. If you write blocks of code in the articles you will have coloring.
-- 📝 Article recommendation. Each article has a tag-based recommendation system to give the user more content to read.
+- Minimal, content-first design.
+- Inline-critical CSS for fast first paint (Tailwind output is minified and embedded into the `<style>` tag at build time).
+- Light/dark themes via DaisyUI (`retro` / `night`), with a user-toggle that persists the preference.
+- RSS feed.
+- Syntax highlighting for code blocks.
+- Tag-based related-posts recommendations.
+- Content editing through [Pages CMS](https://pagescms.org) (see [.pages.yml](.pages.yml)).
 
-## Running and serving a dev build
+## Development
+
+Install dependencies once:
+
+```sh
+npm install
+```
+
+Run the dev server (starts Eleventy serve and the Tailwind watcher concurrently):
 
 ```sh
 npm run start
 ```
 
-Browse to [http://localhost:8080](http://localhost:8080).
+Open <http://localhost:8080>.
 
-## Running and serving a prod build
+> The Tailwind build runs as a separate process from Eleventy. A Liquid shortcode inlines `_site/output.css` into every page, so if the Tailwind watcher is not running, pages will have stale or missing styles. Always use `npm run start` during development rather than invoking `eleventy --serve` directly.
+
+Production build:
 
 ```sh
 npm run build
 ```
 
-Output files are generated into the `_site` folder.
+Output is written to `_site/`.
+
+Debug variants:
+
+```sh
+npm run debug         # DEBUG=Eleventy* single build
+npm run debugstart    # DEBUG=Eleventy* with --serve
+npm run benchmark     # DEBUG=Eleventy:Benchmark*
+```
 
 ## Project structure
 
 ```
-public/
-    This folder contains statics files, copied directly into the output, like the favicon, for example
+public/            Static assets copied verbatim to site root (favicon, images)
+_11ty/             Custom Eleventy plugins (github-content.js: {% githubRaw %} shortcode)
 src/
+  _data/site.js      Site title, description, URL, theme names, Utterances config
   _includes/
-    All UI partials. Inside the css folder, in the global.liquid you can change the CSS variables
-  _data/
-    Here you can change the site info, like the title and description
-  posts/
-    Each individual post in markdown files
-  projects/
-    The projects to show off your work
-  utils/
-    Utility pages for important information
-
-Configuration and build files
+    css/base.css     Tailwind entry point
+    layouts/         default / post / project / empty layouts
+    navbar, footer, dark-toggler, postlist, projectlist partials
+  posts/             Blog posts (markdown), permalink /articles/{slug}/
+  projects/          Project pages (markdown), permalink /projects/{slug}/
+  utils/             404, robots.txt, rss, sitemap
+  index / about / articles / projects / tags   Top-level pages
+eleventy.config.js   Collections, filters, shortcodes, plugin wiring
+tailwind.config.js   Themes, typography, dark-mode selector
+.pages.yml           Pages CMS schema for posts and projects
 ```
+
+## Content
+
+Posts and projects are markdown files with frontmatter. The frontmatter fields are defined in [.pages.yml](.pages.yml) — keep that schema in sync with any new fields the templates read.
+
+- Posts live in `src/posts/`, tagged `post`, published under `/articles/{slug}/`.
+- Projects live in `src/projects/`, tagged `project`, published under `/projects/{slug}/`. Projects with `hidden: true` in their frontmatter are excluded from listings (the page itself still builds).
+
+## Customization notes
+
+- Site metadata: [src/_data/site.js](src/_data/site.js).
+- Themes: edit the `themes` array in [tailwind.config.js](tailwind.config.js) (DaisyUI theme names). The dark-mode selector is `[data-theme="night"]`.
+- Custom Liquid helpers (in [eleventy.config.js](eleventy.config.js)): `similarPosts`, `techPill`, `contrastColor`, `postTags`, `wavy`, `getCssContent`, plus `githubRaw` from the `_11ty/` plugin.
