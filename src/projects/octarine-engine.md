@@ -5,7 +5,7 @@ subdir: Project
 repo: https://github.com/mblackman/Octarine-Engine
 splash: /images/projects/octarine-engine-splash.png
 activeDevelopment: true
-date: 2025-00-24
+date: 2025-09-02
 type: personal-project
 hidden: false
 tech:
