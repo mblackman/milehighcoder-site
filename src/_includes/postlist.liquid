@@ -1,14 +1,21 @@
-<ul class="flex flex-col gap-6 w-full">
+<ul class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
   {% for post in posts limit: count offset: offset %}
-  <li class="group block w-full bg-base-200/50 backdrop-blur-sm rounded-2xl border border-transparent hover:border-primary/20 hover:bg-base-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-    <a href="{{ post.url }}" class="block p-6 no-underline text-base-content max-w-none">
-      <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors duration-200">{{ post.data.title }}</h3>
-      <div class="text-sm opacity-60 mb-3 font-medium">
-        <time datetime="{{ post.data.date }}">
-          {{ post.data.date | date : "%a, %b %d, %Y" }}
-        </time>
+  <li class="group flex w-full bg-base-200/50 backdrop-blur-sm rounded-2xl border border-transparent hover:border-primary/30 hover:bg-base-200 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 animate-fade-in-up overflow-hidden {% if count == 1 %}md:col-span-2{% endif %}" style="animation-delay: {{ forloop.index0 | times: 100 }}ms;">
+    <a href="{{ post.url }}" class="flex flex-col w-full no-underline text-base-content hover:text-base-content max-w-none">
+      {% if post.data.banner %}
+      <div class="w-full h-48 md:h-64 overflow-hidden bg-base-300">
+        <img src="{{ post.data.banner }}" alt="{{ post.data.bannerAlt | default: post.data.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
       </div>
-      <p class="opacity-80 leading-relaxed">{{ post.data.description }}</p>
+      {% endif %}
+      <div class="p-6 flex-grow flex flex-col">
+        <h3 class="text-xl md:text-2xl font-bold mb-2 group-hover:text-primary transition-colors duration-200 {% if count == 1 %}md:text-3xl{% endif %}">{{ post.data.title }}</h3>
+        <div class="text-sm opacity-60 mb-3 font-medium uppercase tracking-wide">
+          <time datetime="{{ post.data.date }}">
+            {{ post.data.date | date : "%b %d, %Y" }}
+          </time>
+        </div>
+        <p class="opacity-80 leading-relaxed text-base">{{ post.data.description }}</p>
+      </div>
     </a>
   </li>
   {% endfor %}
