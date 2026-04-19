@@ -38,6 +38,9 @@
       {% if splash %}
         <meta property="og:image" content="{{ site.url }}{{ splash }}" />
         <meta name="twitter:image" content="{{ site.url }}{{ splash }}" />
+      {% elsif title %}
+        <meta property="og:image" content="https://api.dicebear.com/9.x/bottts/svg?seed={{ title | url_encode }}&backgroundColor=transparent" />
+        <meta name="twitter:image" content="https://api.dicebear.com/9.x/bottts/svg?seed={{ title | url_encode }}&backgroundColor=transparent" />
       {% elsif site.ogImage %}
         <meta property="og:image" content="{{ site.url }}{{ site.ogImage }}" />
         <meta name="twitter:image" content="{{ site.url }}{{ site.ogImage }}" />
