@@ -1,6 +1,5 @@
-import CleanCSS from "clean-css";
 import fs from "fs/promises"
-import pluginRss from "@11ty/eleventy-plugin-rss";
+import pluginRss, { dateToRfc3339, getNewestCollectionItemDate } from "@11ty/eleventy-plugin-rss";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import githubContent from "./_11ty/github-content.js";
 
@@ -14,20 +13,20 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.addPlugin(pluginRss);
-  eleventyConfig.addLiquidFilter("dateToRfc3339", pluginRss.dateToRfc3339);
+  eleventyConfig.addLiquidFilter("dateToRfc3339", dateToRfc3339);
   eleventyConfig.addLiquidFilter(
     "getNewestCollectionItemDate",
-    pluginRss.getNewestCollectionItemDate
+    getNewestCollectionItemDate
   );
 
   eleventyConfig.addLiquidShortcode("getCssContent", async function() {
     try {
       const cssContent = await fs.readFile("./_site/output.css", "utf8");
-      return new CleanCSS({}).minify(cssContent).styles;
+      return cssContent;
     } catch (error) {
       console.error("Error reading CSS file:", error);
       // Throw an error to fail the build
-      throw new Error("Failed to read or minify CSS: " + error.message);
+      throw new Error("Failed to read CSS: " + error.message);
     }
   });
 

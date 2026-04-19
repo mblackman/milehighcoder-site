@@ -1,3 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+@plugin "daisyui" {
+  themes: retro, night;
+}
+
+/* Preserve custom typography max-width from old tailwind.config.js */
+@theme {
+  --typography-max-width: 100ch;
+}
+
+/* Map dark: prefix to DaisyUI night theme (was darkMode in tailwind.config.js) */
+@custom-variant dark (&:where([data-theme="night"], [data-theme="night"] *));
