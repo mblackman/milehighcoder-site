@@ -23,7 +23,7 @@ content:
         type: date
         options:
           format: yyyy-mm-dd
-          name:min: 2024-12-24
+          min: 2024-12-24
       - name: banner
         label: Banner Image
         type: image
@@ -75,13 +75,13 @@ content:
         type: date
         options:
           format: yyyy-mm-dd
-          name:min: 2024-12-24
+          min: 2024-12-24
       - name: endDate
         label: End Date
         type: date
         options:
           format: yyyy-mm-dd
-          name:min: 2024-12-24
+          min: 2024-12-24
       - name: type
         label: Type
         type: select
