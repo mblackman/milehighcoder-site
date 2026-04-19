@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,liquid,njk}", "./.eleventy.js"],
+  content: ["./src/**/*.{html,liquid,njk}", "./eleventy.config.js"],
   theme: {
     extend: {
       typography: {
