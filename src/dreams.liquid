@@ -25,8 +25,6 @@ description: Share a dream. Watch others drift across the sky.
       placeholder="Your name (optional)"
       class="input input-bordered w-full"
     />
-    <input type="text" name="website" tabindex="-1" autocomplete="off"
-           style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
     <div id="cf-turnstile" class="cf-turnstile"
          data-sitekey="{{ site.turnstileSiteKey }}"
          data-theme="auto"
@@ -75,7 +73,7 @@ description: Share a dream. Watch others drift across the sky.
   function addMine(d) {
     const arr = loadMine();
     if (!arr.some(x => x.id === d.id)) {
-      arr.push({ id: d.id, text: d.text, author: d.author || "", tags: ["mine"], t: Date.now() });
+      arr.push({ id: d.id, text: d.text, author: d.author || "", tags: d.tags || ["mine"], t: Date.now() });
       saveMine(arr);
     }
   }
@@ -199,6 +197,39 @@ description: Share a dream. Watch others drift across the sky.
       return;
     }
     const positions = placePositions(dreams.length);
+
+    // Draw constellation lines between close dots
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.style.position = "absolute";
+    svg.style.inset = "0";
+    svg.style.width = "100%";
+    svg.style.height = "100%";
+    svg.style.pointerEvents = "none";
+    svg.style.zIndex = "1";
+    svg.style.color = "oklch(95% 0.02 250)"; // Default light color
+
+    // Determine lines based on squared distance
+    const thresholdSquared = 0.04; // Max distance to form a constellation (e.g. 0.2 units)
+    for (let i = 0; i < positions.length; i++) {
+      for (let j = i + 1; j < positions.length; j++) {
+        const dx = positions[i].x - positions[j].x;
+        const dy = positions[i].y - positions[j].y;
+        if (dx * dx + dy * dy < thresholdSquared) {
+          const line = document.createElementNS(svgNS, "line");
+          line.setAttribute("x1", (positions[i].x * 100) + "%");
+          line.setAttribute("y1", (positions[i].y * 100) + "%");
+          line.setAttribute("x2", (positions[j].x * 100) + "%");
+          line.setAttribute("y2", (positions[j].y * 100) + "%");
+          line.setAttribute("stroke", "currentColor");
+          line.setAttribute("stroke-width", "1.5");
+          line.setAttribute("stroke-opacity", "0.15");
+          svg.appendChild(line);
+        }
+      }
+    }
+    sky.appendChild(svg);
+
     for (let i = 0; i < dreams.length; i++) {
       const d = dreams[i];
       const p = positions[i];
