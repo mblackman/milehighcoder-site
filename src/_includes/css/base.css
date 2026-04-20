@@ -56,6 +56,130 @@
   66% { transform: translate(30px, -30px) scale(0.95); }
 }
 
+/* ---------- Navbar: magical Dreams link ---------- */
+
+.nav-dreams {
+  position: relative;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  overflow: visible;
+}
+.nav-dreams__text {
+  background-image: linear-gradient(
+    100deg,
+    oklch(75% 0.16 300) 0%,
+    oklch(82% 0.14 250) 30%,
+    oklch(90% 0.12 200) 50%,
+    oklch(82% 0.14 330) 75%,
+    oklch(75% 0.16 300) 100%
+  );
+  background-size: 220% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: nav-dreams-shimmer 6s linear infinite;
+  text-shadow: 0 0 18px oklch(80% 0.15 280 / 0.35);
+}
+.nav-dreams__spark {
+  position: absolute;
+  width: var(--spark-size, 4px);
+  height: var(--spark-size, 4px);
+  border-radius: 9999px;
+  background: var(--spark-color, oklch(92% 0.12 280));
+  box-shadow:
+    0 0 6px var(--spark-color, oklch(92% 0.12 280)),
+    0 0 12px var(--spark-glow, oklch(85% 0.14 260));
+  pointer-events: none;
+  opacity: 0;
+  animation: nav-dreams-sparkle var(--spark-duration, 3.4s) ease-in-out infinite;
+  animation-delay: var(--spark-delay, 0s);
+}
+
+.nav-dreams__spark--1 {
+  --spark-size: 5px;
+  --spark-duration: 3.2s;
+  --spark-delay: 0s;
+  top: 14%;
+  left: 6%;
+}
+.nav-dreams__spark--2 {
+  --spark-size: 3px;
+  --spark-color: oklch(90% 0.14 200);
+  --spark-glow: oklch(85% 0.16 220);
+  --spark-duration: 2.6s;
+  --spark-delay: 0.7s;
+  top: -10%;
+  left: 38%;
+}
+.nav-dreams__spark--3 {
+  --spark-size: 4px;
+  --spark-color: oklch(88% 0.16 330);
+  --spark-glow: oklch(78% 0.18 320);
+  --spark-duration: 4.1s;
+  --spark-delay: 1.4s;
+  top: 60%;
+  left: 22%;
+}
+.nav-dreams__spark--4 {
+  --spark-size: 2px;
+  --spark-duration: 2.2s;
+  --spark-delay: 0.3s;
+  top: 30%;
+  left: 58%;
+}
+.nav-dreams__spark--5 {
+  --spark-size: 5px;
+  --spark-color: oklch(85% 0.18 90);
+  --spark-glow: oklch(80% 0.16 80);
+  --spark-duration: 3.8s;
+  --spark-delay: 2.1s;
+  bottom: 8%;
+  right: 12%;
+}
+.nav-dreams__spark--6 {
+  --spark-size: 3px;
+  --spark-duration: 2.9s;
+  --spark-delay: 1.1s;
+  top: -8%;
+  right: 18%;
+}
+.nav-dreams__spark--7 {
+  --spark-size: 2px;
+  --spark-color: oklch(92% 0.12 160);
+  --spark-glow: oklch(85% 0.14 180);
+  --spark-duration: 3.5s;
+  --spark-delay: 2.6s;
+  bottom: -6%;
+  left: 52%;
+}
+
+.nav-dreams:hover .nav-dreams__text {
+  animation-duration: 2.5s;
+  text-shadow: 0 0 22px oklch(85% 0.16 280 / 0.6);
+}
+.nav-dreams:hover .nav-dreams__spark {
+  animation-duration: calc(var(--spark-duration, 3.4s) * 0.55);
+}
+
+@keyframes nav-dreams-shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 220% center; }
+}
+@keyframes nav-dreams-sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  35%      { opacity: 1; transform: scale(1) rotate(20deg); }
+  60%      { opacity: 0.3; transform: scale(0.7) rotate(-10deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-dreams__text,
+  .nav-dreams__spark {
+    animation: none !important;
+  }
+  .nav-dreams__spark { opacity: 0.8; }
+}
+
 /* ---------- Dreams constellation ---------- */
 
 .constellation {
