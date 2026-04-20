@@ -293,7 +293,10 @@ description: Share a dream. Watch others drift across the sky.
   });
 
   let resizeT = null;
+  let lastWidth = window.innerWidth;
   window.addEventListener("resize", () => {
+    if (window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
     if (resizeT) clearTimeout(resizeT);
     resizeT = setTimeout(() => { if (!expandedEl) render(); }, 250);
   });
