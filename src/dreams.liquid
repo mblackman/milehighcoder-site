@@ -1,0 +1,272 @@
+---
+layout: layouts/default.liquid
+title: Dreams
+description: Share a dream. Watch others drift across the sky.
+---
+
+<div class="prose max-w-none w-full animate-fade-in-up">
+  <h2>Dreams</h2>
+  <p>Share your dream.</p>
+
+  <form id="dream-form" class="not-prose flex flex-col gap-3 mt-4">
+    <textarea
+      id="dream-text"
+      name="text"
+      maxlength="500"
+      required
+      rows="3"
+      placeholder="I dream..."
+      class="textarea textarea-bordered w-full"
+    ></textarea>
+    <input
+      id="dream-author"
+      name="author"
+      maxlength="60"
+      placeholder="Your name (optional)"
+      class="input input-bordered w-full"
+    />
+    <input type="text" name="website" tabindex="-1" autocomplete="off"
+           style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
+    <div id="cf-turnstile" class="cf-turnstile"
+         data-sitekey="{{ site.turnstileSiteKey }}"
+         data-theme="auto"
+         data-size="flexible"></div>
+    <div class="flex items-center gap-3">
+      <button type="submit" id="dream-submit" class="btn btn-primary">Send dream</button>
+      <span id="dream-status" class="text-sm opacity-70" aria-live="polite"></span>
+    </div>
+  </form>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <h3 class="mt-10">The sky</h3>
+</div>
+
+<div id="constellation" class="constellation mt-2 not-prose">
+  <div class="constellation__empty" id="constellation-empty">Loading dreams…</div>
+</div>
+<p class="text-xs opacity-60 mt-2 not-prose">Hover a dot to peek · click to open</p>
+
+<script>
+(function () {
+  const form = document.getElementById("dream-form");
+  const textEl = document.getElementById("dream-text");
+  const authorEl = document.getElementById("dream-author");
+  const statusEl = document.getElementById("dream-status");
+  const submitBtn = document.getElementById("dream-submit");
+  const sky = document.getElementById("constellation");
+  const empty = document.getElementById("constellation-empty");
+
+  // ---- local "mine" store: dreams I submitted, shown to me until approved or expired ----
+  const MINE_KEY = "mhc_mine_dreams";
+  const MINE_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+  function loadMine() {
+    try {
+      const raw = localStorage.getItem(MINE_KEY);
+      if (!raw) return [];
+      const arr = JSON.parse(raw);
+      const now = Date.now();
+      return Array.isArray(arr) ? arr.filter(d => d && d.id && d.text && (now - (d.t || 0)) < MINE_TTL_MS) : [];
+    } catch { return []; }
+  }
+  function saveMine(arr) {
+    try { localStorage.setItem(MINE_KEY, JSON.stringify(arr)); } catch {}
+  }
+  function addMine(d) {
+    const arr = loadMine();
+    if (!arr.some(x => x.id === d.id)) {
+      arr.push({ id: d.id, text: d.text, author: d.author || "", tags: ["mine"], t: Date.now() });
+      saveMine(arr);
+    }
+  }
+
+  const pageLoadedAt = Date.now();
+  const MIN_DWELL_MS = 2500; // bot-deterrent: too-fast submits get rejected
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const text = textEl.value.trim();
+    if (!text) return;
+    if (Date.now() - pageLoadedAt < MIN_DWELL_MS) {
+      statusEl.textContent = "Hold on a moment, then submit again.";
+      return;
+    }
+    const tsToken = (window.turnstile && document.querySelector('[name="cf-turnstile-response"]'))
+      ? document.querySelector('[name="cf-turnstile-response"]').value
+      : "";
+    if (!tsToken) {
+      statusEl.textContent = "Please complete the bot check.";
+      return;
+    }
+    submitBtn.disabled = true;
+    statusEl.textContent = "Sending…";
+    try {
+      const fd = new FormData(form);
+      const author = authorEl.value.trim();
+      const res = await fetch("/api/dreams", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          text, author,
+          website: fd.get("website") || "",
+          turnstileToken: tsToken,
+        }),
+      });
+      if (res.status === 201) {
+        const j = await res.json().catch(() => ({}));
+        statusEl.textContent = "Submitted! Yours is in the sky for you. Others see it once approved.";
+        const local = { id: j.id || ("local-" + Date.now()), text, author, tags: ["mine"] };
+        addMine(local);
+        dreams = mergeWithMine(dreams);
+        render();
+        textEl.value = "";
+        authorEl.value = "";
+      } else if (res.status === 429) {
+        statusEl.textContent = "Whoa — too many submissions. Try again later.";
+      } else if (res.status === 403) {
+        statusEl.textContent = "Bot check failed. Refresh and try again.";
+      } else {
+        const j = await res.json().catch(() => ({}));
+        statusEl.textContent = "Error: " + (j.error || res.status);
+      }
+      if (window.turnstile) window.turnstile.reset();
+    } catch (err) {
+      statusEl.textContent = "Network error.";
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---- constellation ----
+  let dreams = [];
+  let expandedEl = null;
+
+  function mergeWithMine(serverDreams) {
+    const seen = new Set(serverDreams.map(d => d.id));
+    const all = loadMine();
+    const stillPending = all.filter(m => !seen.has(m.id));
+    if (stillPending.length !== all.length) saveMine(stillPending);
+    return serverDreams.concat(stillPending);
+  }
+
+  async function loadDreams() {
+    let server = [];
+    try {
+      const res = await fetch("/api/dreams?limit=50");
+      const j = await res.json();
+      server = (j.dreams || []).filter(d => d && d.text);
+    } catch { server = []; }
+    // Drop any local "mine" entries the server now returns (approved). Keep the rest.
+    const serverIds = new Set(server.map(d => d.id));
+    const mineKept = loadMine().filter(m => !serverIds.has(m.id));
+    saveMine(mineKept);
+    dreams = server.concat(mineKept);
+    render();
+  }
+
+  function placePositions(n) {
+    const positions = [];
+    if (n <= 0) return positions;
+    let minDist = Math.sqrt(1 / n) * 0.7;
+    for (let i = 0; i < n; i++) {
+      let placed = null;
+      let attempt = 0;
+      while (!placed && attempt < 30) {
+        const x = 0.05 + Math.random() * 0.9;
+        const y = 0.08 + Math.random() * 0.84;
+        let ok = true;
+        for (const p of positions) {
+          const dx = (p.x - x), dy = (p.y - y);
+          if (dx * dx + dy * dy < minDist * minDist) { ok = false; break; }
+        }
+        if (ok) placed = { x, y };
+        attempt++;
+      }
+      if (!placed) {
+        minDist *= 0.9;
+        placed = { x: 0.05 + Math.random() * 0.9, y: 0.08 + Math.random() * 0.84 };
+      }
+      positions.push(placed);
+    }
+    return positions;
+  }
+
+  function render() {
+    sky.innerHTML = "";
+    if (!dreams.length) {
+      empty.textContent = "No dreams yet. Be the first.";
+      sky.appendChild(empty);
+      return;
+    }
+    const positions = placePositions(dreams.length);
+    for (let i = 0; i < dreams.length; i++) {
+      const d = dreams[i];
+      const p = positions[i];
+      const el = document.createElement("div");
+      const tagClasses = (d.tags || []).map(t => "tag-" + t).join(" ");
+      let cardPos = "";
+      if (p.x < 0.18) cardPos = "dream--card-right";
+      else if (p.x > 0.82) cardPos = "dream--card-left";
+      else if (p.y < 0.22) cardPos = "dream--card-below";
+      el.className = "dream " + tagClasses + (cardPos ? " " + cardPos : "");
+      el.style.left = (p.x * 100).toFixed(2) + "%";
+      el.style.top = (p.y * 100).toFixed(2) + "%";
+      el.style.setProperty("--bob-duration", (3 + Math.random() * 4).toFixed(2) + "s");
+      el.style.setProperty("--bob-delay", (-Math.random() * 4).toFixed(2) + "s");
+      el.dataset.id = String(d.id);
+
+      const dot = document.createElement("span");
+      dot.className = "dream__dot";
+      el.appendChild(dot);
+
+      const card = document.createElement("div");
+      card.className = "dream__card";
+      const txt = document.createElement("div");
+      txt.className = "dream__card-text";
+      txt.textContent = d.text;
+      card.appendChild(txt);
+      if (d.author) {
+        const auth = document.createElement("div");
+        auth.className = "dream__card-author";
+        auth.textContent = "— " + d.author;
+        card.appendChild(auth);
+      }
+      el.appendChild(card);
+
+      sky.appendChild(el);
+    }
+  }
+
+  function collapse() {
+    if (!expandedEl) return;
+    expandedEl.classList.remove("dream--expanded");
+    sky.classList.remove("constellation--has-expanded");
+    expandedEl = null;
+  }
+
+  sky.addEventListener("click", (e) => {
+    const target = e.target.closest(".dream");
+    if (!target) {
+      if (expandedEl) collapse();
+      return;
+    }
+    if (expandedEl === target) { collapse(); return; }
+    if (expandedEl) collapse();
+    target.classList.add("dream--expanded");
+    sky.classList.add("constellation--has-expanded");
+    expandedEl = target;
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") collapse();
+  });
+
+  let resizeT = null;
+  window.addEventListener("resize", () => {
+    if (resizeT) clearTimeout(resizeT);
+    resizeT = setTimeout(() => { if (!expandedEl) render(); }, 250);
+  });
+
+  loadDreams();
+})();
+</script>

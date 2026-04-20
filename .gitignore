@@ -23,3 +23,7 @@ package-lock.json
 # Ignore test files
 .cache
 test/stubs-layout-cache/_includes/*.js
+
+# Wrangler / Cloudflare local state + secrets
+.wrangler/
+.dev.vars

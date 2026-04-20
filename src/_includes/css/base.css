@@ -55,3 +55,237 @@
   33% { transform: translate(-50px, 50px) scale(1.1); }
   66% { transform: translate(30px, -30px) scale(0.95); }
 }
+
+/* ---------- Dreams constellation ---------- */
+
+.constellation {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 320px;
+  border-radius: 1.5rem;
+  background: radial-gradient(ellipse at 30% 20%, rgba(120,140,255,0.10), transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(255,140,200,0.08), transparent 60%);
+  /* overflow visible so hover cards near edges stay in frame */
+}
+
+.constellation::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+.constellation--has-expanded::before { opacity: 1; pointer-events: auto; }
+
+.dream {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 2;
+  animation: dream-bob var(--bob-duration, 5s) ease-in-out infinite;
+  animation-delay: var(--bob-delay, 0s);
+  transition: filter 0.2s ease;
+}
+.dream:hover { filter: brightness(1.3); }
+
+.dream__dot {
+  display: block;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: currentColor;
+  color: oklch(78% 0.12 250);
+  box-shadow: 0 0 12px currentColor, 0 0 24px currentColor;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.dream__dot::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 9999px;
+  border: 1.5px solid currentColor;
+  opacity: 0.35;
+  animation: dream-ring 2.6s ease-out infinite;
+  pointer-events: none;
+}
+.dream:hover .dream__dot {
+  transform: scale(1.35);
+  box-shadow: 0 0 18px currentColor, 0 0 40px currentColor;
+}
+.dream::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  border-radius: 9999px;
+}
+@keyframes dream-ring {
+  0%   { transform: scale(0.8); opacity: 0.45; }
+  80%  { transform: scale(1.9); opacity: 0;    }
+  100% { transform: scale(1.9); opacity: 0;    }
+}
+
+.dream__card {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 14px);
+  top: auto;
+  right: auto;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(260px, 50vw);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: oklch(20% 0.02 250 / 0.95);
+  color: oklch(95% 0.02 250);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* Edge-aware hover card placement (set by JS via classes on .dream). */
+.dream--card-below .dream__card {
+  top: calc(100% + 14px);
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+.dream--card-left .dream__card {
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  right: calc(100% + 14px);
+  transform: translateY(-50%);
+}
+.dream--card-right .dream__card {
+  top: 50%;
+  bottom: auto;
+  left: calc(100% + 14px);
+  right: auto;
+  transform: translateY(-50%);
+}
+.dream__card-text {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.dream__card-author {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Hover: pause bob + grow + reveal compact card next to dot. */
+.dream:hover {
+  animation-play-state: paused;
+  z-index: 5;
+}
+.dream:hover .dream__dot {
+  transform: scale(1.6);
+  box-shadow: 0 0 22px currentColor, 0 0 50px currentColor;
+}
+.dream:hover .dream__dot::after { animation-play-state: paused; }
+.dream:hover .dream__card { display: block; }
+
+/* Click-pinned: full centered expansion with backdrop. */
+.dream--expanded {
+  z-index: 10;
+  left: 50% !important;
+  top: 50% !important;
+  animation: none;
+}
+.dream--expanded .dream__dot { display: none; }
+.dream--expanded .dream__card {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  width: min(420px, 80vw);
+  max-width: none;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  pointer-events: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.dream--expanded .dream__card-text { font-size: 1.05rem; line-height: 1.5; }
+.dream--expanded .dream__card-author { margin-top: 0.75rem; font-size: 0.85rem; }
+
+.constellation__empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+/* tag-driven visual styles. Compose with .dream by adding class on the parent. */
+.tag-funny  { animation: dream-bob var(--bob-duration, 5s) ease-in-out infinite, dream-jiggle 0.6s ease-in-out infinite; }
+.tag-funny  .dream__dot { color: oklch(85% 0.18 90); }
+
+.tag-nightmare { animation: dream-bob var(--bob-duration, 5s) ease-in-out infinite, dream-glitch 2.4s steps(6, end) infinite; }
+.tag-nightmare .dream__dot { color: oklch(60% 0.20 20); }
+
+.tag-soft   .dream__dot { animation: dream-pulse 3.5s ease-in-out infinite; color: oklch(85% 0.10 200); }
+
+.tag-cosmic .dream__dot {
+  color: oklch(80% 0.15 300);
+  animation: dream-cosmic 4s ease-in-out infinite;
+}
+
+.tag-hopeful .dream__dot { color: oklch(88% 0.15 140); }
+
+/* "mine" — submitter's pending dream visible only on their device */
+.tag-mine .dream__dot {
+  color: oklch(92% 0.04 90);
+  outline: 2px dashed oklch(92% 0.04 90 / 0.7);
+  outline-offset: 4px;
+  animation: dream-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dream-bob {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50%      { transform: translate(-50%, calc(-50% - 10px)); }
+}
+@keyframes dream-jiggle {
+  0%, 100% { rotate: 0deg; }
+  25%      { rotate: -8deg; }
+  75%      { rotate: 8deg; }
+}
+@keyframes dream-glitch {
+  0%, 100% { translate: 0 0; filter: hue-rotate(0deg); }
+  20%      { translate: 2px -1px; filter: hue-rotate(30deg); }
+  40%      { translate: -2px 1px; filter: hue-rotate(-30deg); }
+  60%      { translate: 1px 2px; filter: hue-rotate(20deg); }
+  80%      { translate: -1px -2px; filter: hue-rotate(-20deg); }
+}
+@keyframes dream-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.4); }
+}
+@keyframes dream-cosmic {
+  0%, 100% { box-shadow: 0 0 12px currentColor, 0 0 24px currentColor; }
+  50%      { box-shadow: 0 0 24px currentColor, 0 0 60px currentColor; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dream,
+  .dream__dot,
+  .dream__dot::after,
+  .tag-funny,
+  .tag-nightmare,
+  .tag-soft .dream__dot,
+  .tag-cosmic .dream__dot {
+    animation: none !important;
+  }
+}

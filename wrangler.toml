@@ -1,0 +1,12 @@
+name = "milehighcoder-site"
+compatibility_date = "2025-04-01"
+pages_build_output_dir = "_site"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "milehighcoder-dreams"
+database_id = "7ecea0ad-5e29-4cfb-894b-7ca29656b5b2"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "137fb893d02e4bd4b40d10b78f8fec78"

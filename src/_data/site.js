@@ -18,4 +18,9 @@ export default {
     lightTheme: "boxy-light",
     darkTheme: "photon-dark"
   },
+  // Cloudflare Turnstile (bot protection on dream submit form).
+  // Default values are CF's "always passes" test keys — replace with your real
+  // site key from https://dash.cloudflare.com/?to=/:account/turnstile before deploy.
+  // Pair with TURNSTILE_SECRET env var on the server.
+  turnstileSiteKey: "0x4AAAAAAC_6Y3qJZnoAnLrq",
 };

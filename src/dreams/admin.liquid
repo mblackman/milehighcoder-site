@@ -1,0 +1,304 @@
+---
+layout: layouts/default.liquid
+title: Dreams · Admin
+permalink: /dreams/admin/index.html
+eleventyExcludeFromCollections: true
+---
+
+<div class="prose max-w-none w-full animate-fade-in-up">
+  <h2>Dreams admin</h2>
+</div>
+
+<div id="login-view" class="not-prose hidden flex-col gap-3 max-w-sm mt-4">
+  <input id="pw" type="password" placeholder="Admin password" class="input input-bordered w-full" autocomplete="current-password" />
+  <button id="login-btn" class="btn btn-primary">Log in</button>
+  <span id="login-err" class="text-error text-sm" aria-live="polite"></span>
+</div>
+
+<div id="admin-view" class="not-prose hidden flex flex-col gap-8 mt-4">
+  <div class="flex items-center justify-between flex-wrap gap-2">
+    <h3 class="text-xl font-semibold">Dreams</h3>
+    <div class="flex items-center gap-2">
+      <label class="text-sm opacity-70">Show:</label>
+      <select id="status-filter" class="select select-sm select-bordered">
+        <option value="pending" selected>Pending</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+        <option value="all">All</option>
+      </select>
+      <button id="logout-btn" class="btn btn-sm btn-ghost">Log out</button>
+    </div>
+  </div>
+
+  <div id="pending-list" class="flex flex-col gap-3">
+    <div class="opacity-60 italic">Loading…</div>
+  </div>
+
+  <div>
+    <h3 class="text-xl font-semibold mb-2">Tags</h3>
+    <p class="text-sm opacity-70 mb-3">
+      Weight: relative selection probability (default 1.0). Style class: CSS class applied on the dream — built-ins:
+      <code>tag-funny</code>, <code>tag-nightmare</code>, <code>tag-soft</code>, <code>tag-cosmic</code>, <code>tag-hopeful</code>.
+    </p>
+    <div id="tag-list" class="flex flex-col gap-2">
+      <div class="opacity-60 italic">Loading…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const loginView = document.getElementById("login-view");
+  const adminView = document.getElementById("admin-view");
+  const pwEl = document.getElementById("pw");
+  const loginBtn = document.getElementById("login-btn");
+  const loginErr = document.getElementById("login-err");
+  const logoutBtn = document.getElementById("logout-btn");
+  const pendingList = document.getElementById("pending-list");
+  const tagList = document.getElementById("tag-list");
+
+  function show(view) {
+    loginView.classList.toggle("hidden", view !== "login");
+    loginView.classList.toggle("flex", view === "login");
+    adminView.classList.toggle("hidden", view !== "admin");
+    adminView.classList.toggle("flex", view === "admin");
+  }
+
+  async function checkSession() {
+    try {
+      const r = await fetch("/api/admin/me", { credentials: "same-origin" });
+      if (r.ok) {
+        show("admin");
+        await Promise.all([loadPending(), loadTags()]);
+      } else {
+        show("login");
+      }
+    } catch {
+      show("login");
+    }
+  }
+
+  loginBtn.addEventListener("click", async () => {
+    loginErr.textContent = "";
+    loginBtn.disabled = true;
+    try {
+      const r = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ password: pwEl.value }),
+      });
+      if (r.ok) {
+        pwEl.value = "";
+        await checkSession();
+      } else if (r.status === 429) {
+        loginErr.textContent = "Too many attempts. Wait 10 minutes.";
+      } else {
+        loginErr.textContent = "Invalid password.";
+      }
+    } catch {
+      loginErr.textContent = "Network error.";
+    } finally {
+      loginBtn.disabled = false;
+    }
+  });
+
+  pwEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") loginBtn.click();
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    await fetch("/api/admin/logout", { method: "POST", credentials: "same-origin" });
+    show("login");
+  });
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    })[c]);
+  }
+
+  const statusFilter = document.getElementById("status-filter");
+  statusFilter.addEventListener("change", loadPending);
+
+  async function loadPending() {
+    const filter = statusFilter.value;
+    pendingList.innerHTML = '<div class="opacity-60 italic">Loading…</div>';
+    try {
+      const r = await fetch("/api/admin/dreams?status=" + encodeURIComponent(filter), { credentials: "same-origin" });
+      if (r.status === 401) { show("login"); return; }
+      const j = await r.json();
+      const dreams = j.dreams || [];
+      if (!dreams.length) {
+        pendingList.innerHTML = '<div class="opacity-60 italic">No dreams in this view.</div>';
+        return;
+      }
+      pendingList.innerHTML = "";
+      for (const d of dreams) pendingList.appendChild(renderDreamRow(d));
+    } catch {
+      pendingList.innerHTML = '<div class="text-error">Failed to load.</div>';
+    }
+  }
+
+  function statusBadge(s) {
+    const cls = s === "approved" ? "badge-success" : s === "rejected" ? "badge-warning" : "badge-ghost";
+    return `<span class="badge badge-sm ${cls}">${escapeHtml(s)}</span>`;
+  }
+
+  function renderDreamRow(d) {
+    const wrap = document.createElement("div");
+    wrap.className = "card bg-base-200 border border-base-content/10";
+    wrap.innerHTML = `
+      <div class="card-body p-4 gap-2">
+        <div class="flex items-center gap-2 text-xs opacity-70">
+          ${statusBadge(d.status || "pending")}
+          <span>#${d.id}</span>
+          <span>— ${escapeHtml(d.author || "anonymous")}</span>
+        </div>
+        <div class="whitespace-pre-wrap">${escapeHtml(d.text)}</div>
+        <div class="flex flex-wrap items-center gap-2 mt-2">
+          <input type="text" placeholder="tags (comma separated)" value="${escapeHtml((d.tags||[]).join(", "))}"
+                 class="input input-sm input-bordered flex-1 min-w-[180px]" data-role="tags" />
+          <button class="btn btn-sm btn-primary" data-role="save-tags">Save tags</button>
+          <button class="btn btn-sm btn-success" data-role="approve">Approve</button>
+          <button class="btn btn-sm btn-warning" data-role="reject">Reject</button>
+          <button class="btn btn-sm btn-ghost text-error" data-role="delete">Delete</button>
+        </div>
+        <span class="text-sm" data-role="status" aria-live="polite"></span>
+      </div>
+    `;
+    const tagsInput = wrap.querySelector('[data-role="tags"]');
+    const statusEl = wrap.querySelector('[data-role="status"]');
+    const parseTags = () => tagsInput.value.split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+    const filterValue = () => statusFilter.value;
+
+    async function patch(body, opts = {}) {
+      statusEl.textContent = "…";
+      try {
+        const r = await fetch("/api/dreams/" + d.id, {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify(body),
+        });
+        if (r.status === 401) { show("login"); return; }
+        if (!r.ok) { const j = await r.json().catch(()=>({})); statusEl.textContent = "Err: " + (j.error||r.status); return; }
+        const j = await r.json();
+        await loadTags();
+        if (opts.removeIfStatusChanged && body.status && filterValue() !== "all" && body.status !== filterValue()) {
+          wrap.remove();
+        } else {
+          // refresh row in place
+          const refreshed = j.dream || { ...d, ...body };
+          wrap.replaceWith(renderDreamRow({ ...d, ...refreshed }));
+        }
+      } catch { statusEl.textContent = "Network error"; }
+    }
+
+    wrap.querySelector('[data-role="save-tags"]').addEventListener("click", () =>
+      patch({ tags: parseTags() }));
+    wrap.querySelector('[data-role="approve"]').addEventListener("click", () =>
+      patch({ status: "approved", tags: parseTags() }, { removeIfStatusChanged: true }));
+    wrap.querySelector('[data-role="reject"]').addEventListener("click", () =>
+      patch({ status: "rejected", tags: parseTags() }, { removeIfStatusChanged: true }));
+    wrap.querySelector('[data-role="delete"]').addEventListener("click", async () => {
+      if (!confirm("Delete this dream permanently?")) return;
+      const r = await fetch("/api/dreams/" + d.id, { method: "DELETE", credentials: "same-origin" });
+      if (r.status === 401) { show("login"); return; }
+      if (r.ok) wrap.remove();
+    });
+    return wrap;
+  }
+
+  async function loadTags() {
+    tagList.innerHTML = '<div class="opacity-60 italic">Loading…</div>';
+    try {
+      const r = await fetch("/api/tags");
+      const j = await r.json();
+      const tags = j.tags || [];
+      tagList.innerHTML = "";
+      tagList.appendChild(renderNewTagRow());
+      if (!tags.length) {
+        const empty = document.createElement("div");
+        empty.className = "opacity-60 italic";
+        empty.textContent = "No tags yet. Tags are created automatically when you assign them to a dream.";
+        tagList.appendChild(empty);
+        return;
+      }
+      for (const t of tags) tagList.appendChild(renderTagRow(t));
+    } catch {
+      tagList.innerHTML = '<div class="text-error">Failed to load tags.</div>';
+    }
+  }
+
+  function renderTagRow(t) {
+    const row = document.createElement("div");
+    row.className = "flex flex-wrap items-center gap-2 bg-base-200 rounded-lg p-2";
+    row.innerHTML = `
+      <span class="font-mono text-sm w-32">${escapeHtml(t.name)}</span>
+      <label class="text-xs opacity-70">weight</label>
+      <input type="number" step="0.1" min="0" value="${t.weight}" class="input input-xs input-bordered w-24" data-role="weight" />
+      <label class="text-xs opacity-70">style</label>
+      <input type="text" value="${escapeHtml(t.style_class || "")}" class="input input-xs input-bordered w-40" data-role="style" />
+      <button class="btn btn-xs btn-primary" data-role="save">Save</button>
+      <button class="btn btn-xs btn-ghost text-error" data-role="del">Delete</button>
+      <span class="text-xs" data-role="status"></span>
+    `;
+    const status = row.querySelector('[data-role="status"]');
+    row.querySelector('[data-role="save"]').addEventListener("click", async () => {
+      const weight = parseFloat(row.querySelector('[data-role="weight"]').value);
+      const style_class = row.querySelector('[data-role="style"]').value.trim();
+      status.textContent = "…";
+      const r = await fetch("/api/tags/" + encodeURIComponent(t.name), {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ weight, style_class }),
+      });
+      if (r.status === 401) { show("login"); return; }
+      status.textContent = r.ok ? "saved" : "err";
+      setTimeout(() => { status.textContent = ""; }, 1500);
+    });
+    row.querySelector('[data-role="del"]').addEventListener("click", async () => {
+      if (!confirm(`Delete tag "${t.name}"? Removes from all dreams.`)) return;
+      const r = await fetch("/api/tags/" + encodeURIComponent(t.name), {
+        method: "DELETE", credentials: "same-origin",
+      });
+      if (r.status === 401) { show("login"); return; }
+      if (r.ok) row.remove();
+    });
+    return row;
+  }
+
+  function renderNewTagRow() {
+    const row = document.createElement("div");
+    row.className = "flex flex-wrap items-center gap-2 p-2 border border-dashed border-base-content/20 rounded-lg";
+    row.innerHTML = `
+      <input type="text" placeholder="new tag name" class="input input-xs input-bordered w-32" data-role="name" />
+      <input type="number" step="0.1" min="0" value="1.0" class="input input-xs input-bordered w-24" data-role="weight" />
+      <input type="text" placeholder="style class" class="input input-xs input-bordered w-40" data-role="style" />
+      <button class="btn btn-xs btn-primary" data-role="add">Add tag</button>
+      <span class="text-xs" data-role="status"></span>
+    `;
+    const status = row.querySelector('[data-role="status"]');
+    row.querySelector('[data-role="add"]').addEventListener("click", async () => {
+      const name = row.querySelector('[data-role="name"]').value.trim().toLowerCase();
+      if (!name) return;
+      const weight = parseFloat(row.querySelector('[data-role="weight"]').value);
+      const style_class = row.querySelector('[data-role="style"]').value.trim() || ("tag-" + name);
+      const r = await fetch("/api/tags", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ name, weight, style_class }),
+      });
+      if (r.status === 401) { show("login"); return; }
+      status.textContent = r.ok ? "added" : "err";
+      if (r.ok) await loadTags();
+    });
+    return row;
+  }
+
+  checkSession();
+})();
+</script>
