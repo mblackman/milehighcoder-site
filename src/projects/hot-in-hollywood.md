@@ -19,7 +19,7 @@ tech:
 
 ## Technical Highlights
 
-Developing a narrative-heavy RPG required a robust architecture capable of blending visual novel mechanics with collection and pacing systems. The game was built in **Unity** using **C#**, leveraging several powerful frameoworks and engineering practices to ensure a smooth, maintainable project:
+Developing a narrative-heavy RPG required a robust architecture capable of blending visual novel mechanics with collection and pacing systems. The game was built in **Unity** using **C#**, leveraging several powerful frameworks and engineering practices to ensure a smooth, maintainable project:
 
 *   **Naninovel:** Integrated as the core driver for the game's extensive storytelling components. This framework handled the massive volume of writing, branching narrative nodes, and character sprite scripting.
 *   **DoTween:** Utilized heavily to implement highly polished UI animations, engaging screen transitions, and to maximize overall "game feel" within the RPG and visual novel segments.

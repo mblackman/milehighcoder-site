@@ -1,6 +1,6 @@
 ---
 title: Elysian Guardians
-description: A farming sim where players capture creature who fight and aid around the farm.
+description: A farming sim where players capture creatures who fight and aid around the farm.
 subdir: Project
 splash: /images/projects/elysian-guardians-splash.webp
 date: 2023-09-02
