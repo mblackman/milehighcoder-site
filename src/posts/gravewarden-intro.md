@@ -2,13 +2,15 @@
 title: First! Building Gravewarden on Octarine Engine
 description: An introductory post outlining how I built a game prototype on my custom-built engine.
 date: 2026-09-11
+draft: true
 banner:
 bannerAlt: Place alt text for broken images and OSRs.
 noindex: true
-tags:
-  - software
-  - game-dev
-  - gravewarden
+hidden: true
+# tags:
+#   - software
+#   - game-dev
+#   - gravewarden
 ---
 
 ## The Goal

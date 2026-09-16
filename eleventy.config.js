@@ -45,7 +45,8 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("posts", function (collectionApi) {
-    return collectionApi.getFilteredByGlob("src/posts/*.md");
+    return collectionApi.getFilteredByGlob("src/posts/*.md")
+                        .filter(post => !post.data.draft && !post.data.hidden && post.data.published !== false);
   });
 
   eleventyConfig.addLiquidFilter(

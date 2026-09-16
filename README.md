@@ -70,7 +70,7 @@ tailwind.config.js   Themes, typography, dark-mode selector
 
 Posts and projects are markdown files with frontmatter. The frontmatter fields are defined in [.pages.yml](.pages.yml) — keep that schema in sync with any new fields the templates read.
 
-- Posts live in `src/posts/`, tagged `post`, published under `/articles/{slug}/`.
+- Posts live in `src/posts/`, tagged `post`, published under `/articles/{slug}/`. Posts with `draft: true` in their frontmatter are excluded from collections and will not build or publish.
 - Projects live in `src/projects/`, tagged `project`, published under `/projects/{slug}/`. Projects with `hidden: true` in their frontmatter are excluded from listings (the page itself still builds).
 
 ## Customization notes

@@ -18,6 +18,10 @@ content:
       - name: description
         label: Description
         type: string
+      - name: draft
+        label: Draft
+        type: boolean
+        default: false
       - name: date
         label: Date
         type: date
