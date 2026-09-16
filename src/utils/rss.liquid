@@ -28,6 +28,7 @@
     <name>{{ site.author.name }}</name>
   </author>
   {%- for post in collections.posts %} {%- assign absolutePostUrl = post.url %}
+  {%- unless post.data.noindex %}
   <entry>
     <title>{{ post.data.title }}</title>
     <link href="{{ absolutePostUrl }}" />
@@ -37,5 +38,6 @@
       {{ post.templateContent | escape | replace: "'", "&apos;" }}
     </content>
   </entry>
+  {%- endunless %}
   {%- endfor %}
 </feed>

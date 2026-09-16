@@ -30,6 +30,12 @@
         <meta property="og:description" content="{{ site.description }}" />
       {% endif %} 
 
+      {% if noindex %}
+        <meta name="robots" content="noindex, nofollow" />
+      {% elsif robots %}
+        <meta name="robots" content="{{ robots }}" />
+      {% endif %}
+
       <link rel="canonical" href="{{ site.url }}{{ page.url }}" />
       <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
       <meta property="og:type" content="{% if layout == 'layouts/post.liquid' %}article{% else %}website{% endif %}" />

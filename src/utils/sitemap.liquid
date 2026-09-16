@@ -12,19 +12,23 @@ layout: layouts/empty.liquid
     <priority>0.8</priority>
   </url>
   {% for page in collections.posts %}
+    {% unless page.data.noindex %}
     <url>
       <loc>{{site.url}}{{ page.url | url }}</loc>
       <lastmod>{{ page.date | date: '%Y-%m-%d' }}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1.0</priority>
-      </url>
+    </url>
+    {% endunless %}
   {% endfor %}
   {% for page in collections.projects %}
+    {% unless page.data.noindex %}
     <url>
       <loc>{{site.url}}{{ page.url | url }}</loc>
       <lastmod>{{ page.date | date: '%Y-%m-%d' }}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.3</priority>
     </url>
+    {% endunless %}
   {% endfor %}
 </urlset>

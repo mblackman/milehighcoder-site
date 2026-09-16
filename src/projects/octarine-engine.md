@@ -8,6 +8,7 @@ activeDevelopment: true
 date: 2025-09-02
 type: personal-project
 hidden: false
+noindex: true
 tech:
   - C++
   - CMake
