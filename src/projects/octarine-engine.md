@@ -2,7 +2,7 @@
 title: Octarine Engine
 description: A tiny 2D game engine powered by an archetype ECS
 subdir: Project
-repo: https://github.com/mblackman/Octarine-Engine
+repo: https://github.com/Octarine-Club/octarine-engine
 splash: /images/projects/octarine-engine-splash.png
 activeDevelopment: true
 date: 2025-09-02
