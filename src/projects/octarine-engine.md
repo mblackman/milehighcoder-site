@@ -7,7 +7,7 @@ splash: /images/projects/octarine-engine-splash.png
 activeDevelopment: true
 date: 2025-09-02
 type: personal-project
-hidden: false
+hidden: true
 noindex: true
 tech:
   - C++
