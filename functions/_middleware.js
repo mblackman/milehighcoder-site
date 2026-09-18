@@ -19,28 +19,6 @@ export async function onRequest(context) {
   const path = url.pathname;
   const method = request.method;
 
-  if (path.replace(/\/+$/, "") === "/projects/octarine-engine") {
-    if (context.env?.ASSETS?.fetch) {
-      const res = await context.env.ASSETS.fetch(new URL("/404.html", request.url));
-      const headers = new Headers(res.headers);
-      headers.set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
-      headers.set("X-Robots-Tag", "noindex, nofollow");
-      return new Response(res.body, {
-        status: 404,
-        statusText: "Not Found",
-        headers,
-      });
-    }
-    return new Response("Not Found", {
-      status: 404,
-      statusText: "Not Found",
-      headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
-        "X-Robots-Tag": "noindex, nofollow",
-      },
-    });
-  }
-
   if (!path.startsWith("/api/")) return next();
 
   // /api/dreams allowed for anyone (GET/POST). Admin gate handled per-endpoint.
