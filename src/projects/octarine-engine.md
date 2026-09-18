@@ -7,8 +7,12 @@ splash: /images/projects/octarine-engine-splash.png
 activeDevelopment: true
 date: 2025-09-02
 type: personal-project
+draft: true
+published: false
 hidden: true
 noindex: true
+permalink: false
+eleventyExcludeFromCollections: true
 tech:
   - C++
   - CMake

@@ -77,7 +77,7 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addCollection("projects", function (collectionApi) {
     return collectionApi.getFilteredByGlob("src/projects/*.md")
-                        .filter(project => !project.data.hidden);
+                        .filter(project => !project.data.hidden && !project.data.draft && project.data.published !== false);
   });
 
   eleventyConfig.addFilter("techPill", function (name) {
